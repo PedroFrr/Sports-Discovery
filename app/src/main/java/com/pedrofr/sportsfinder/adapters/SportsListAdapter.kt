@@ -1,4 +1,4 @@
-package com.pedrofr.animaldiscovery.adapters
+package com.pedrofr.sportsfinder.adapters
 
 
 import android.view.LayoutInflater
@@ -8,10 +8,10 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.pedrofr.animaldiscovery.SportsListFragmentDirections
+import com.pedrofr.sportsfinder.SportsListFragmentDirections
 
-import com.pedrofr.animaldiscovery.data.model.Sport
-import com.pedrofr.animaldiscovery.databinding.ListItemAnimalBinding
+import com.pedrofr.sportsfinder.data.model.Sport
+import com.pedrofr.sportsfinder.databinding.ListItemAnimalBinding
 
 class AnimalListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(AnimalDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

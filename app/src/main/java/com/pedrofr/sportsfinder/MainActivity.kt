@@ -1,4 +1,4 @@
-package com.pedrofr.animaldiscovery
+package com.pedrofr.sportsfinder
 
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton

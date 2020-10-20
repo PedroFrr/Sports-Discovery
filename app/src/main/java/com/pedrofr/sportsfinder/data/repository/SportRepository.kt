@@ -1,6 +1,6 @@
-package com.pedrofr.animaldiscovery.data.repository
+package com.pedrofr.sportsfinder.data.repository
 
-import com.pedrofr.animaldiscovery.data.model.Sport
+import com.pedrofr.sportsfinder.data.model.Sport
 
 interface SportRepository {
     suspend fun getSports() : List<Sport>

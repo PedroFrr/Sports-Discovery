@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AnimalDiscovery</string>
+    <string name="app_name">SportsDiscovery</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="sport_list_fragment_label">Sport List Fragment</string>

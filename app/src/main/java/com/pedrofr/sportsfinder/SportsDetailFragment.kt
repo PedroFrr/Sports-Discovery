@@ -1,4 +1,4 @@
-package com.pedrofr.animaldiscovery
+package com.pedrofr.sportsfinder
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -26,11 +26,11 @@ class SportsDetailFragment : Fragment() {
         arguments?.let {
             val args = SportsDetailFragmentArgs.fromBundle(it)
             val sportsKey = args.sportsKey
-            val sports = App.sports
-            val sport = sports.first { sport ->
-                sport.sportsKey.toString() == sportsKey
-            }
-            sport_title.text = sport.title
+//            val sports = App.sports
+//            val sport = sports.first { sport ->
+//                sport.sportsKey.toString() == sportsKey
+//            }
+//            sport_title.text = sport.title
 
         }
 

@@ -1,4 +1,4 @@
-package com.pedrofr.animaldiscovery.data.model
+package com.pedrofr.sportsfinder.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

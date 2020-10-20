@@ -1,4 +1,4 @@
-package com.pedrofr.animaldiscovery.data.database
+package com.pedrofr.sportsfinder.data.database
 
 import androidx.room.TypeConverter
 import java.util.*

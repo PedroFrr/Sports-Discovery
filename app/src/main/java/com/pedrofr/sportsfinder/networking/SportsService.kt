@@ -8,10 +8,12 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface SportService {
+interface SportsService {
 
     @GET("sports/")
     suspend fun getSports(
@@ -21,7 +23,7 @@ interface SportService {
     companion object {
         private const val BASE_URL = "https://api.the-odds-api.com/v3/"
 
-        fun create(): SportService {
+        fun create(): SportsService {
             val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
 
             val client = OkHttpClient.Builder()
@@ -33,9 +35,9 @@ interface SportService {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
-                .addConverterFactory(Json.asConverterFactory(contentType))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
-                .create(SportService::class.java)
+                .create(SportsService::class.java)
         }
     }
 }

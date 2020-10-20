@@ -10,7 +10,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="sport"
-            type="com.pedrofr.animaldiscovery.data.model.Sport"/>
+            type="com.pedrofr.sportsfinder.data.model.Sport"/>
     </data>
 
     <androidx.cardview.widget.CardView

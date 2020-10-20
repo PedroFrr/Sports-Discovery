@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.pedrofr.animaldiscovery.data.database
+package com.pedrofr.sportsfinder.data.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.pedrofr.animaldiscovery.data.database.dao.SportsDao
-import com.pedrofr.animaldiscovery.data.model.Sport
-import com.pedrofr.animaldiscovery.utils.DATABASE_NAME
+import com.pedrofr.sportsfinder.data.database.dao.SportsDao
+import com.pedrofr.sportsfinder.data.model.Sport
+import com.pedrofr.sportsfinder.utils.DATABASE_NAME
 
 /**
  * The Room database for this app

@@ -1,6 +1,8 @@
-package com.pedrofr.animaldiscovery.networking.response
+package com.pedrofr.sportsfinder.networking.response
 
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
-data class GetSportsResponse(val results: List<SportsResponse>)
+data class GetSportsResponse(
+    @field:SerializedName("success") val success: Boolean,
+    @field:SerializedName("data") val results: List<SportsResponse>
+)

@@ -1,4 +1,4 @@
-package com.pedrofr.animaldiscovery.adapters
+package com.pedrofr.sportsfinder.adapters
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

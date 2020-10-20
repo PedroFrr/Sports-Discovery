@@ -1,20 +1,31 @@
-package com.pedrofr.animaldiscovery
+package com.pedrofr.sportsfinder
 
 import android.app.Application
-import com.pedrofr.animaldiscovery.data.model.Sport
+import com.pedrofr.sportsfinder.data.database.AppDatabase
+import com.pedrofr.sportsfinder.data.model.Sport
+import com.pedrofr.sportsfinder.data.repository.SportRepository
+import com.pedrofr.sportsfinder.data.repository.SportRepositoryImpl
+import com.pedrofr.sportsfinder.networking.SportsApi
+import com.pedrofr.sportsfinder.networking.SportsService.Companion.create
 
 class App : Application() {
 
     //TODO remove
     companion object {
-        val sports = listOf(
-            Sport(title = "NCAAF", imageUrl = "https://pokeres.bastionbot.org/images/pokemon/5.png"),
-            Sport(title = "NFL", imageUrl = "https://pokeres.bastionbot.org/images/pokemon/4.png"),
-            Sport(title = "AFL"),
-            Sport(title = "MLB"),
-            Sport(title = "Basketball Euroleague"),
-            Sport(title = "NBA")
-        )
+        private lateinit var instance: App
+        private val database: AppDatabase by lazy {
+            AppDatabase.getInstance(instance)
+        }
+        private val service by lazy { create()}
+        private val remoteApi by lazy {SportsApi(service)}
+        val repository : SportRepository by lazy { SportRepositoryImpl(database.sportsDao(), remoteApi, instance)}
+
+        fun getAppContext() = instance
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        instance = this
     }
 
 

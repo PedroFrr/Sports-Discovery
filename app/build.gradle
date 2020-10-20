@@ -61,7 +61,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
 
     //Kotlin Serialization
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
@@ -92,6 +92,14 @@ dependencies {
     //Room
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+
+    //Moshi
+    implementation "com.squareup.retrofit2:converter-moshi:$rootProject.moshiVersion"
+
+    //Gson
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+
 
 }
 

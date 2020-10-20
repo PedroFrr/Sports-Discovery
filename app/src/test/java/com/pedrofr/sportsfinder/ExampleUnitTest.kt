@@ -1,4 +1,4 @@
-package com.pedrofr.animaldiscovery
+package com.pedrofr.sportsfinder
 
 import org.junit.Test
 
