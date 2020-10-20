@@ -1,21 +1,25 @@
-package com.pedrofr.animaldiscovery.networking
+package com.pedrofr.sportsfinder.networking
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.pedrofr.animaldiscovery.networking.response.GetSportsResponse
+import com.pedrofr.sportsfinder.BuildConfig
+import com.pedrofr.sportsfinder.networking.response.GetSportsResponse
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface SportService {
 
-    @GET("species")
-    suspend fun getAnimals() : GetSportsResponse
+    @GET("sports/")
+    suspend fun getSports(
+        @Query("apiKey") apiKey: String = BuildConfig.ODDS_ACCESS_KEY
+    ) : GetSportsResponse
 
     companion object {
-        private const val BASE_URL = "https://www.fishwatch.gov/api/"
+        private const val BASE_URL = "https://api.the-odds-api.com/v3/"
 
         fun create(): SportService {
             val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
