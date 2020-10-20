@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/AnimalListFragment">
+
+    <fragment
+        android:id="@+id/AnimalListFragment"
+        android:name="com.pedrofr.animaldiscovery.SportsListFragment"
+        android:label="@string/animal_list_fragment_label"
+        tools:layout="@layout/fragment_animal_list">
+
+        <action
+            android:id="@+id/action_listToDetail"
+            app:destination="@id/AnimalDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/AnimalDetailFragment"
+        android:name="com.pedrofr.animaldiscovery.SportsDetailFragment"
+        android:label="@string/animal_detail_fragment_label"
+        tools:layout="@layout/fragment_animal_detail">
+
+        <action
+            android:id="@+id/action_detailToList"
+            app:destination="@id/AnimalListFragment" />
+        <argument
+            android:name="animalId"
+            app:argType="string" />
+    </fragment>
+</navigation>
