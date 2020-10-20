@@ -2,8 +2,8 @@
     <string name="app_name">AnimalDiscovery</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="animal_list_fragment_label">Animal List Fragment</string>
-    <string name="animal_detail_fragment_label">Animal Detail Fragment</string>
+    <string name="sport_list_fragment_label">Sport List Fragment</string>
+    <string name="sport_detail_fragment_label">Sport Detail Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 

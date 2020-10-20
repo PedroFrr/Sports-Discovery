@@ -8,7 +8,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.pedrofr.animaldiscovery.AnimalListFragmentDirections
+import com.pedrofr.animaldiscovery.SportsListFragmentDirections
+
 import com.pedrofr.animaldiscovery.data.model.Sport
 import com.pedrofr.animaldiscovery.databinding.ListItemAnimalBinding
 
@@ -33,7 +34,7 @@ class AnimalListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(AnimalDiffC
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener {
-                binding.animal?.let { plant ->
+                binding.sport?.let { plant ->
                     navigateToAnimal(plant, it)
                 }
             }
@@ -44,7 +45,7 @@ class AnimalListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(AnimalDiffC
             view: View
         ) {
             val direction =
-                AnimalListFragmentDirections.actionListToDetail(
+                SportsListFragmentDirections.actionListToDetail(
                     sport.sportsKey.toString()
                 )
             view.findNavController().navigate(direction)
@@ -52,7 +53,7 @@ class AnimalListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(AnimalDiffC
 
         fun bind(item: Sport) {
             binding.apply {
-                animal = item
+                sport = item
                 executePendingBindings()
             }
         }

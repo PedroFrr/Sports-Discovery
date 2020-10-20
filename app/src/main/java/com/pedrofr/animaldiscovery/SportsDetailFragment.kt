@@ -24,13 +24,13 @@ class SportsDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
-            val args = AnimalDetailFragmentArgs.fromBundle(it)
-            val animalId = args.animalId
-            val animals = App.sports
-            val animal = animals.first { animal ->
-                animal.animalId.toString() == animalId
+            val args = SportsDetailFragmentArgs.fromBundle(it)
+            val sportsKey = args.sportsKey
+            val sports = App.sports
+            val sport = sports.first { sport ->
+                sport.sportsKey.toString() == sportsKey
             }
-            animalName.text = animal.name
+            sport_title.text = sport.title
 
         }
 

@@ -5,6 +5,6 @@ import com.pedrofr.animaldiscovery.data.model.Sport
 
 class SportRepositoryImpl(private val sportsDao: SportsDao): SportRepository {
 
-    override suspend fun getSports(): List<Sport> = sportsDao.getAnimals()
+    override suspend fun getSports(): List<Sport> = listOf()
 
 }

@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/AnimalListFragment">
+    app:startDestination="@id/SportListFragment">
 
     <fragment
-        android:id="@+id/AnimalListFragment"
+        android:id="@+id/SportListFragment"
         android:name="com.pedrofr.animaldiscovery.SportsListFragment"
-        android:label="@string/animal_list_fragment_label"
+        android:label="@string/sport_list_fragment_label"
         tools:layout="@layout/fragment_animal_list">
 
         <action
             android:id="@+id/action_listToDetail"
-            app:destination="@id/AnimalDetailFragment" />
+            app:destination="@id/SportDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/AnimalDetailFragment"
+        android:id="@+id/SportDetailFragment"
         android:name="com.pedrofr.animaldiscovery.SportsDetailFragment"
-        android:label="@string/animal_detail_fragment_label"
+        android:label="@string/sport_detail_fragment_label"
         tools:layout="@layout/fragment_animal_detail">
 
         <action
             android:id="@+id/action_detailToList"
-            app:destination="@id/AnimalListFragment" />
+            app:destination="@id/SportListFragment" />
         <argument
-            android:name="animalId"
+            android:name="sportsKey"
             app:argType="string" />
     </fragment>
 </navigation>

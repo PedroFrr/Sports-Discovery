@@ -9,7 +9,7 @@
             name="clickListener"
             type="android.view.View.OnClickListener"/>
         <variable
-            name="animal"
+            name="sport"
             type="com.pedrofr.animaldiscovery.data.model.Sport"/>
     </data>
 
@@ -35,7 +35,7 @@
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:contentDescription="@string/animal_item_image"
-                app:imageFromUrl="@{animal.imageUrl}" />
+                app:imageFromUrl="@{sport.imageUrl}" />
 
             <LinearLayout
                 android:id="@+id/nameHolder"
@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@{animal.name}"
+                    android:text="@{sport.title}"
                     android:gravity="center_horizontal"
                     android:maxLines="3"
                     android:padding="@dimen/padding_half"
