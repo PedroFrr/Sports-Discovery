@@ -3,6 +3,7 @@ package com.pedrofr.sportsfinder.data.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import com.pedrofr.sportsfinder.data.database.dao.SportsDao
+import com.pedrofr.sportsfinder.data.model.Odd
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.NetworkStatusChecker
 import com.pedrofr.sportsfinder.networking.SportsApi
@@ -52,6 +53,41 @@ class SportRepositoryImpl(
             sportsDao.getSports()
         }
     }
+
+    override suspend fun getOdds(sportKey: String): List<Odd> {
+        networkStatusChecker.performIfConnectedToInternet {
+            val results = sportsApi.getOdds(sportKey)
+            if (results is Success) {
+                results.data.let { oddsResponse ->
+                    val odds = oddsResponse.map {
+                        val sites = it.sites
+                        //TODO add odds to model
+                        Odd(
+                            sportsKey = it.sportsKey,
+                            startTime = it.startTime,
+                            homeTeam = it.teams[0], //the first position of the string is the HomeTeam (only two positions)
+                            awayTeam = it.teams[1]
+                        )
+                    }
+                    withContext(Dispatchers.IO) { sportsDao.addOdds(odds) }
+                }
+            }
+        }
+
+        val data = getOddsDataFromCache(sportKey)
+        return if (data.isNotEmpty()) {
+            data
+        } else {
+            listOf()
+        }
+    }
+
+    private suspend fun getOddsDataFromCache(sportsKey: String): List<Odd> {
+        return withContext(Dispatchers.IO) {
+            sportsDao.getOdds(sportsKey)
+        }
+    }
+
 
 }
 

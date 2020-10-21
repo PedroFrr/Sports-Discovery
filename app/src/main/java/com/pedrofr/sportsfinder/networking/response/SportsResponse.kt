@@ -1,12 +1,11 @@
 package com.pedrofr.sportsfinder.networking.response
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 data class SportsResponse(
-    @field:SerializedName("key") val key: String,
-    @field:SerializedName("active") val active: Boolean,
-    @field:SerializedName("group") val group: String,
-    @field:SerializedName("details") val details:  String,
-    @field:SerializedName("title") val title: String,
-    @field:SerializedName("has_outrights") val has_outrights: Boolean
+    @field:Json(name = "key") val key: String,
+    @field:Json(name = "active") val active: Boolean,
+    @field:Json(name = "group") val group: String,
+    @field:Json(name = "details") val details:  String,
+    @field:Json(name = "title") val title: String
 )

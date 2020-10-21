@@ -96,11 +96,6 @@ dependencies {
     //Moshi
     implementation "com.squareup.retrofit2:converter-moshi:$rootProject.moshiVersion"
 
-    //Gson
-    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-
-
 }
 
 def getSportsOddsAccess() {

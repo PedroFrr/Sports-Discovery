@@ -1,5 +1,6 @@
 package com.pedrofr.sportsfinder.networking
 
+import com.pedrofr.sportsfinder.networking.response.OddsResponse
 import com.pedrofr.sportsfinder.networking.response.SportsResponse
 
 
@@ -14,4 +15,18 @@ class SportsApi(private val apiService: SportsService ) {
         } catch (error: Throwable) {
             Failure(error)
         }
+
+    suspend fun getOdds(sportKey: String): Result<List<OddsResponse>> =
+        try {
+            val response = apiService.getOdds(sport = sportKey)
+            //TODO test this if it only returns Pinnacle Odds
+            val results = response.results
+                .map{oddsResponse ->
+                    oddsResponse.copy(sites = oddsResponse.sites.filter { it.siteKey == "pinnacle"})}
+            Success(results)
+
+        } catch (error: Throwable) {
+            Failure(error)
+        }
+
 }
