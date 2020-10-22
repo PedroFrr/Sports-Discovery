@@ -34,19 +34,19 @@ class AnimalListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(AnimalDiffC
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener {
-                binding.sport?.let { plant ->
-                    navigateToAnimal(plant, it)
+                binding.sport?.let { sport ->
+                    navigateToOdds(sport, it)
                 }
             }
         }
 
-        private fun navigateToAnimal(
+        private fun navigateToOdds(
             sport: Sport,
             view: View
         ) {
             val direction =
                 SportsListFragmentDirections.actionListToDetail(
-                    sport.sportsKey.toString()
+                    sport.sports_key
                 )
             view.findNavController().navigate(direction)
         }
@@ -64,7 +64,7 @@ class AnimalListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(AnimalDiffC
 private class AnimalDiffCallback : DiffUtil.ItemCallback<Sport>() {
 
     override fun areItemsTheSame(oldItem: Sport, newItem: Sport): Boolean {
-        return oldItem.sportsKey == newItem.sportsKey
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: Sport, newItem: Sport): Boolean {

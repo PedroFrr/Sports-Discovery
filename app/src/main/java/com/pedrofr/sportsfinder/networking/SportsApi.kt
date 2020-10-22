@@ -21,8 +21,7 @@ class SportsApi(private val apiService: SportsService ) {
             val response = apiService.getOdds(sport = sportKey)
             //TODO test this if it only returns Pinnacle Odds
             val results = response.results
-                .map{oddsResponse ->
-                    oddsResponse.copy(sites = oddsResponse.sites.filter { it.siteKey == "pinnacle"})}
+
             Success(results)
 
         } catch (error: Throwable) {

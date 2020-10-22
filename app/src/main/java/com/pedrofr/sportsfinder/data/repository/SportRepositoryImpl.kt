@@ -34,7 +34,10 @@ class SportRepositoryImpl(
                 results.data.let { sportsResponse ->
                     val sports = sportsResponse.map {
                         //TODO replace with more attributes with time
-                        Sport(title = it.title)
+                        Sport(
+                            sports_key = it.key,
+                            title = it.title
+                        )
                     }
                     withContext(Dispatchers.IO) { sportsDao.addSports(sports) }
                 }
@@ -58,19 +61,19 @@ class SportRepositoryImpl(
         networkStatusChecker.performIfConnectedToInternet {
             val results = sportsApi.getOdds(sportKey)
             if (results is Success) {
-                results.data.let { oddsResponse ->
-                    val odds = oddsResponse.map {
-                        val sites = it.sites
-                        //TODO add odds to model
-                        Odd(
-                            sportsKey = it.sportsKey,
-                            startTime = it.startTime,
-                            homeTeam = it.teams[0], //the first position of the string is the HomeTeam (only two positions)
-                            awayTeam = it.teams[1]
-                        )
-                    }
-                    withContext(Dispatchers.IO) { sportsDao.addOdds(odds) }
-                }
+//                results.data.let { oddsResponse ->
+//                    val odds = oddsResponse.map {
+//                        val sites = it.sites
+//                        //TODO add odds to model
+//                        Odd(
+//                            sportsKey = it.sportsKey,
+//                            startTime = it.startTime,
+//                            homeTeam = it.teams[0], //the first position of the string is the HomeTeam (only two positions)
+//                            awayTeam = it.teams[1]
+//                        )
+//                    }
+//                    withContext(Dispatchers.IO) { sportsDao.addOdds(odds) }
+//                }
             }
         }
 
