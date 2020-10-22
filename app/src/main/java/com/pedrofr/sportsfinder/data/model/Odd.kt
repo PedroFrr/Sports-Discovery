@@ -8,9 +8,10 @@ import java.util.*
 data class Odd(
     @PrimaryKey(autoGenerate = true) val oddsKey: Int = 0,
     val sportsKey: String,
-    val startTime: Long,
+    val startTime: String,
     val homeTeam: String,
     val awayTeam: String,
     val homeTeamOdd: Double = 0.0,
-    val awayTeamOdd: Double = 0.0
+    val awayTeamOdd: Double = 0.0,
+    val drawOdd: Double? = 0.0
 )

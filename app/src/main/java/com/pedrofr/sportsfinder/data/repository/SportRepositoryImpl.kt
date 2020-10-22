@@ -2,6 +2,7 @@ package com.pedrofr.sportsfinder.data.repository
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.text.format.DateFormat
 import com.pedrofr.sportsfinder.data.database.dao.SportsDao
 import com.pedrofr.sportsfinder.data.model.Odd
 import com.pedrofr.sportsfinder.data.model.Sport
@@ -9,7 +10,11 @@ import com.pedrofr.sportsfinder.networking.NetworkStatusChecker
 import com.pedrofr.sportsfinder.networking.SportsApi
 import com.pedrofr.sportsfinder.networking.Success
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class SportRepositoryImpl(
     private val sportsDao: SportsDao,
@@ -32,20 +37,24 @@ class SportRepositoryImpl(
             val results = sportsApi.loadSports()
             if (results is Success) {
                 results.data.let { sportsResponse ->
-                    val sports = sportsResponse.map {
-                        //TODO replace with more attributes with time
-                        Sport(
-                            sports_key = it.key,
-                            title = it.title
-                        )
+                    if (getSportsDataFromCache().isEmpty()) {
+                        val sports = sportsResponse
+                            .filter { it.group.contains("soccer", true) }
+                            .map {
+                                //TODO replace with more attributes with time
+                                Sport(
+                                    sports_key = it.key,
+                                    title = it.title
+                                )
+                            }
+                        withContext(Dispatchers.IO) { sportsDao.addSports(sports) }
                     }
-                    withContext(Dispatchers.IO) { sportsDao.addSports(sports) }
+
                 }
             }
         }
-        val data = getSportsDataFromCache()
-        return if (data.isNotEmpty()) {
-            data
+        return if (getSportsDataFromCache().isNotEmpty()) {
+            getSportsDataFromCache()
         } else {
             listOf()
         }
@@ -57,38 +66,42 @@ class SportRepositoryImpl(
         }
     }
 
-    override suspend fun getOdds(sportKey: String): List<Odd> {
-        networkStatusChecker.performIfConnectedToInternet {
-            val results = sportsApi.getOdds(sportKey)
-            if (results is Success) {
-//                results.data.let { oddsResponse ->
-//                    val odds = oddsResponse.map {
-//                        val sites = it.sites
-//                        //TODO add odds to model
-//                        Odd(
-//                            sportsKey = it.sportsKey,
-//                            startTime = it.startTime,
-//                            homeTeam = it.teams[0], //the first position of the string is the HomeTeam (only two positions)
-//                            awayTeam = it.teams[1]
-//                        )
-//                    }
-//                    withContext(Dispatchers.IO) { sportsDao.addOdds(odds) }
-//                }
-            }
-        }
-
-        val data = getOddsDataFromCache(sportKey)
-        return if (data.isNotEmpty()) {
-            data
-        } else {
-            listOf()
-        }
-    }
-
     private suspend fun getOddsDataFromCache(sportsKey: String): List<Odd> {
         return withContext(Dispatchers.IO) {
             sportsDao.getOdds(sportsKey)
         }
+    }
+
+    override suspend fun getOdds(sportKey: String): Flow<List<Odd>> {
+
+        return flow {
+            val results = sportsApi.getOdds(sportKey)
+            if (results is Success) {
+                results.data.let { oddsResponse ->
+
+                    if (getOddsDataFromCache(sportKey).isEmpty()) {
+                        val pinnacleSite = oddsResponse
+                            .flatMap { it.sites }
+                            .first()
+                        val odds = oddsResponse
+                            .map { odds ->
+                                Odd(
+                                    sportsKey = odds.sportsKey,
+                                    startTime = DateFormat.format("h:mm a", odds.startTime)
+                                        .toString(),
+                                    homeTeam = odds.teams[0], //TODO see what team is the homeTeam this is not necessarily true
+                                    awayTeam = odds.teams[1],
+                                    homeTeamOdd = pinnacleSite.odds.h2h[0],
+                                    drawOdd = pinnacleSite.odds.h2h[1],
+                                    awayTeamOdd = pinnacleSite.odds.h2h[2]
+                                )
+                            }
+                        emit(odds)
+                    }
+                }
+            }
+
+        }.flowOn(Dispatchers.IO)
     }
 
 

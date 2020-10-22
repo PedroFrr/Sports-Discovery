@@ -10,7 +10,7 @@ import com.pedrofr.sportsfinder.data.model.Sport
 @Dao
 interface SportsDao {
 
-    @Query("SELECT * FROM Sport")
+    @Query("SELECT * FROM Sport Order By title ")
     fun getSports(): List<Sport>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -1,6 +1,7 @@
 package com.pedrofr.sportsfinder.data.database
 
 import androidx.room.TypeConverter
+import java.text.SimpleDateFormat
 import java.util.*
 
 class Converters {

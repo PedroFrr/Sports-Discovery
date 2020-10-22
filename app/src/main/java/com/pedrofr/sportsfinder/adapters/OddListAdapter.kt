@@ -1,6 +1,5 @@
 package com.pedrofr.sportsfinder.adapters
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,13 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pedrofr.sportsfinder.SportsListFragmentDirections
+import com.pedrofr.sportsfinder.data.model.Odd
 import com.pedrofr.sportsfinder.data.model.Sport
-import com.pedrofr.sportsfinder.databinding.ListItemSportBinding
+import com.pedrofr.sportsfinder.databinding.ListItemOddBinding
 
-class SportsListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCallback()) {
+class OddListAdapter: ListAdapter<Odd, RecyclerView.ViewHolder>(OddDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return SportViewHolder(
-            ListItemSportBinding.inflate(
+        return OddViewHolder(
+            ListItemOddBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -24,19 +24,19 @@ class SportsListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCa
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val sport = getItem(position)
-        (holder as SportViewHolder).bind(sport)
+        val odd = getItem(position)
+        (holder as OddViewHolder).bind(odd)
     }
 
-    class SportViewHolder(
-        private val binding: ListItemSportBinding
+    class OddViewHolder(
+        private val binding: ListItemOddBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.setClickListener {
-                binding.sport?.let { sport ->
-                    navigateToOdds(sport, it)
-                }
-            }
+//            binding.setClickListener {
+//                binding.sport?.let { sport ->
+//                    navigateToOdds(sport, it)
+//                }
+//            }
         }
 
         private fun navigateToOdds(
@@ -50,23 +50,36 @@ class SportsListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCa
             view.findNavController().navigate(direction)
         }
 
-        fun bind(item: Sport) {
+        fun bind(item: Odd) {
             binding.apply {
-                sport = item
+                odd = item
                 executePendingBindings()
             }
         }
     }
 
+
 }
 
-private class SportDiffCallback : DiffUtil.ItemCallback<Sport>() {
+private class OddDiffCallback : DiffUtil.ItemCallback<Odd>() {
 
-    override fun areItemsTheSame(oldItem: Sport, newItem: Sport): Boolean {
-        return oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: Odd, newItem: Odd): Boolean {
+        return oldItem.oddsKey == newItem.oddsKey
     }
 
-    override fun areContentsTheSame(oldItem: Sport, newItem: Sport): Boolean {
+    override fun areContentsTheSame(oldItem: Odd, newItem: Odd): Boolean {
         return oldItem == newItem
     }
+}
+
+sealed class DataItem {
+    data class OddItem(val odd: Odd): DataItem() {
+        override val id = odd.oddsKey
+    }
+
+    data class Header(val typeName: String): DataItem() {
+        override val id = typeName.hashCode().toLong()
+    }
+
+    abstract val id: Long
 }

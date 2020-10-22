@@ -2,6 +2,7 @@ package com.pedrofr.sportsfinder.networking
 
 import com.pedrofr.sportsfinder.networking.response.OddsResponse
 import com.pedrofr.sportsfinder.networking.response.SportsResponse
+import java.util.stream.Collectors
 
 
 class SportsApi(private val apiService: SportsService ) {
@@ -19,8 +20,11 @@ class SportsApi(private val apiService: SportsService ) {
     suspend fun getOdds(sportKey: String): Result<List<OddsResponse>> =
         try {
             val response = apiService.getOdds(sport = sportKey)
-            //TODO test this if it only returns Pinnacle Odds
+            //TODO only display Pinnacle results
+
             val results = response.results
+
+
 
             Success(results)
 

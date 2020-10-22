@@ -26,24 +26,22 @@ interface SportsService {
         @Query("mkt") market: String = "h2h"
     ) : GetOddsResponse
 
-    companion object {
-        private const val BASE_URL = "https://api.the-odds-api.com/v3/"
-
-        fun create(): SportsService {
-            val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
-
-            val client = OkHttpClient.Builder()
-                .addInterceptor(logger)
-                .build()
-
-            val contentType = "application/json".toMediaType()
-
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(MoshiConverterFactory.create().asLenient()) //asLenient in the sense that we don't have to pass all the Json fields from the endpoint
-                .build()
-                .create(SportsService::class.java)
-        }
-    }
+//    companion object {
+//        private const val BASE_URL = "https://api.the-odds-api.com/v3/"
+//
+//        fun create(): SportsService {
+//            val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+//
+//            val client = OkHttpClient.Builder()
+//                .addInterceptor(logger)
+//                .build()
+//
+//            return Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .client(client)
+//                .addConverterFactory(MoshiConverterFactory.create().asLenient()) //asLenient in the sense that we don't have to pass all the Json fields from the endpoint
+//                .build()
+//                .create(SportsService::class.java)
+//        }
+//    }
 }

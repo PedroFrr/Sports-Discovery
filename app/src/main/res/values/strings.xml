@@ -8,4 +8,5 @@
     <string name="previous">Previous</string>
 
     <string name="animal_item_image">Picture of Animal</string>
+    <string name="draw_label">Draw</string>
 </resources>

@@ -5,22 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.pedrofr.sportsfinder.adapters.OddListAdapter
+import com.pedrofr.sportsfinder.viewmodels.OddsListViewModel
 import kotlinx.android.synthetic.main.fragment_sports_detail.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class SportsDetailFragment : Fragment() {
+class OddListFragment : Fragment() {
 
-    private val repository by lazy { App.repository}
+    private val adapter by lazy { OddListAdapter() }
+    private val viewModel: OddsListViewModel by viewModel()
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sports_detail, container, false)
@@ -29,20 +33,30 @@ class SportsDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO inner RecyclerView
+        initUi()
+        updateData()
+        loadOddsList()
 
-        arguments?.let {
-            val args = SportsDetailFragmentArgs.fromBundle(it)
-            val sportsKey = args.sportsKey
-            lifecycleScope.launch(Dispatchers.IO) {
-                val odds = repository.getOdds(sportsKey)
+    }
 
+    private fun initUi() {
+        oddsRecyclerView.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        oddsRecyclerView.adapter = adapter
 
+    }
 
-            }
-
-
+    private fun loadOddsList() {
+        viewModel.oddsListLiveData.observe(viewLifecycleOwner) { odds ->
+            adapter.submitList(odds)
         }
+    }
 
+    private fun updateData() {
+        arguments?.let {
+            val args = OddListFragmentArgs.fromBundle(it)
+            val sportsKey = args.sportsKey
+            viewModel.saveOddsLiveData(sportsKey)
+        }
     }
 }

@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/SportDetailFragment"
-        android:name="com.pedrofr.sportsfinder.SportsDetailFragment"
+        android:name="com.pedrofr.sportsfinder.OddListFragment"
         android:label="@string/sport_detail_fragment_label"
         tools:layout="@layout/fragment_sports_detail">
 
