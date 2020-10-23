@@ -86,7 +86,7 @@ class SportRepositoryImpl(
                                 .map { odds ->
                                     Odd(
                                         sportsKey = odds.sportsKey,
-                                        startTime = DateFormat.format("HH:mm", Date(odds.startTime * 1000L)).toString() ,
+                                        startTime = odds.startTime ,
                                         homeTeam = odds.homeTeam, //TODO see what team is the homeTeam this is not necessarily true
                                         awayTeam = odds.teams.first { team -> team != odds.homeTeam },
                                         homeTeamOdd = pinnacleSite.odds.h2h[0],

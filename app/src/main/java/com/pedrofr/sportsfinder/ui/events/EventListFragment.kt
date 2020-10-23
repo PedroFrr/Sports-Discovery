@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pedrofr.sportsfinder.adapters.BaseItem
-import com.pedrofr.sportsfinder.adapters.OddListAdapter
+import com.pedrofr.sportsfinder.ui.adapters.BaseItem
+import com.pedrofr.sportsfinder.ui.adapters.OddListAdapter
 import com.pedrofr.sportsfinder.data.model.HeaderItem
-import com.pedrofr.sportsfinder.data.model.Odd
-import com.pedrofr.sportsfinder.data.model.OddItem
+import com.pedrofr.sportsfinder.data.model.Event
+import com.pedrofr.sportsfinder.data.model.EventItem
 import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading
 import com.pedrofr.sportsfinder.networking.Success
+import com.pedrofr.sportsfinder.utils.convertToDayMonth
 import com.pedrofr.sportsfinder.viewmodels.OddsListViewModel
 import kotlinx.android.synthetic.main.fragment_sports_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class OddListFragment : Fragment() {
+class EventListFragment : Fragment() {
 
     private val adapter by lazy { OddListAdapter() }
     private val viewModel: OddsListViewModel by viewModel()
@@ -62,7 +63,7 @@ class OddListFragment : Fragment() {
         viewModel.result.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Success -> {
-                    val orderedOdds = createAlphabetizedOdds((result as Success<List<Odd>>).data)
+                    val orderedOdds = createAlphabetizedOdds((result as Success<List<Event>>).data)
                     adapter.submitList(orderedOdds)
                 }
                 is Loading -> {
@@ -79,9 +80,9 @@ class OddListFragment : Fragment() {
 
     }
 
-    private fun createAlphabetizedOdds(odds: List<Odd>): MutableList<BaseItem> {
+    private fun createAlphabetizedOdds(events: List<Event>): MutableList<BaseItem> {
         // Wrap data in list items
-        val oddItems = odds.map { OddItem(
+        val oddItems = events.map { EventItem(
             oddsKey = it.oddsKey,
             startTime= it.startTime,
             homeTeam= it.homeTeam,
@@ -96,10 +97,11 @@ class OddListFragment : Fragment() {
         // Loop through the fruit list and add headers where we need them
         var currentHeader: String? = null
         oddItems.forEach { oddItem ->
-            oddItem.oddsKey.toString().let {
-                if (it != currentHeader) {
-                    oddsWithAlphabetHeaders.add(HeaderItem(it))
-                    currentHeader = it
+            val startDate = convertToDayMonth(oddItem.startTime)
+            startDate.let {startTime ->
+                if (startTime != currentHeader) {
+                    oddsWithAlphabetHeaders.add(HeaderItem(startTime))
+                    currentHeader = startTime
                 }
             }
             oddsWithAlphabetHeaders.add(oddItem)

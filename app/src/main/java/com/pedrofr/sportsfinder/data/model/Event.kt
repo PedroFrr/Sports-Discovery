@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Odd(
     @PrimaryKey(autoGenerate = true) val oddsKey: Long = 0,
     val sportsKey: String,
-    val startTime: String,
+    val startTime: Long,
     val homeTeam: String,
     val awayTeam: String,
     val homeTeamOdd: Double = 0.0,

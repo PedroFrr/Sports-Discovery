@@ -5,19 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pedrofr.sportsfinder.adapters.SportsListAdapter
-import com.pedrofr.sportsfinder.data.model.Odd
+import com.pedrofr.sportsfinder.ui.adapters.SportsListAdapter
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading
 import com.pedrofr.sportsfinder.networking.Success
 import com.pedrofr.sportsfinder.viewmodels.SportsListViewModel
 
-import kotlinx.android.synthetic.main.fragment_animal_list.*
-import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.fragment_sports_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -33,7 +29,7 @@ class SportsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_animal_list, container, false)
+        return inflater.inflate(R.layout.fragment_sports_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
