@@ -9,6 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedrofr.sportsfinder.adapters.OddListAdapter
+import com.pedrofr.sportsfinder.data.model.Odd
+import com.pedrofr.sportsfinder.networking.Failure
+import com.pedrofr.sportsfinder.networking.Loading
+import com.pedrofr.sportsfinder.networking.Success
 import com.pedrofr.sportsfinder.viewmodels.OddsListViewModel
 import kotlinx.android.synthetic.main.fragment_sports_detail.*
 import kotlinx.coroutines.launch
@@ -46,17 +50,31 @@ class OddListFragment : Fragment() {
 
     }
 
-    private fun loadOddsList() {
-        viewModel.oddsListLiveData.observe(viewLifecycleOwner) { odds ->
-            adapter.submitList(odds)
-        }
-    }
-
     private fun updateData() {
         arguments?.let {
             val args = OddListFragmentArgs.fromBundle(it)
             val sportsKey = args.sportsKey
-            viewModel.saveOddsLiveData(sportsKey)
+            viewModel.fetchOdds(sportsKey)
         }
+    }
+
+    private fun loadOddsList() {
+        viewModel.result.observe(viewLifecycleOwner, { result ->
+            when (result){
+                is Success -> {
+                    adapter.submitList(((result) as Success<List<Odd>>).data)
+                }
+                is Loading -> {
+                    //TODO handle loading
+                }
+                is Failure -> {
+                    //TODO handle failure
+                }
+            }
+        })
+    }
+
+    private fun showLoadingStatus(){
+
     }
 }

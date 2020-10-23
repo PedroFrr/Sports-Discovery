@@ -16,7 +16,7 @@ interface SportsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addSports(sports: List<Sport>)
 
-    @Query("SELECT * FROM Odd WHERE sportsKey = :sportsId")
+    @Query("SELECT * FROM Odd WHERE sportsKey = :sportsId Order By startTime")
     fun getOdds(sportsId: String): List<Odd>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -1,5 +1,7 @@
 package com.pedrofr.sportsfinder.di
 
+import android.net.ConnectivityManager
+import com.pedrofr.sportsfinder.networking.NetworkStatusChecker
 import com.pedrofr.sportsfinder.networking.SportsApi
 import com.pedrofr.sportsfinder.networking.SportsService
 import com.pedrofr.sportsfinder.utils.BASE_URL
@@ -14,6 +16,7 @@ val networkModule = module {
     single { create() }
 
     single { SportsApi(get())}
+
 }
 
 private fun create(): SportsService {

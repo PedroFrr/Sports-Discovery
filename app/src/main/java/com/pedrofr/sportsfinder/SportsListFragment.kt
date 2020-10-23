@@ -9,7 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pedrofr.sportsfinder.adapters.SportsListAdapter
+import com.pedrofr.sportsfinder.data.model.Odd
 import com.pedrofr.sportsfinder.data.model.Sport
+import com.pedrofr.sportsfinder.networking.Failure
+import com.pedrofr.sportsfinder.networking.Loading
+import com.pedrofr.sportsfinder.networking.Success
 import com.pedrofr.sportsfinder.viewmodels.SportsListViewModel
 
 import kotlinx.android.synthetic.main.fragment_animal_list.*
@@ -45,10 +49,20 @@ class SportsListFragment : Fragment() {
     }
 
     private fun loadSportsList(){
-        lifecycleScope.launch {
-            viewModel.result.observe(viewLifecycleOwner) { sports ->
-                adapter.submitList(sports)
+        viewModel.fetchSports()
+        viewModel.result.observe(viewLifecycleOwner, { result ->
+            //TODO Handle Failure, loading....
+            when (result){
+                is Success -> {
+                    adapter.submitList(((result) as Success<List<Sport>>).data)
+                }
+                is Loading -> {
+                    //TODO handle loading
+                }
+                is Failure -> {
+                    //TODO handle failure
+                }
             }
-        }
+        })
     }
 }

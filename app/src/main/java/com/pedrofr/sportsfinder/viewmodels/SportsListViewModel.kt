@@ -1,15 +1,27 @@
 package com.pedrofr.sportsfinder.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import android.accounts.NetworkErrorException
+import androidx.lifecycle.*
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.data.repository.SportRepository
+import com.pedrofr.sportsfinder.networking.Failure
+import com.pedrofr.sportsfinder.networking.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SportsListViewModel(private val repository : SportRepository): ViewModel() {
 
-    val result: LiveData<List<Sport>> = liveData {
-        emit (repository.getSports())
+    var result:LiveData<Result<Any>> = MutableLiveData()
+
+    fun fetchSports(){
+        viewModelScope.launch {
+            try {
+                result = repository.getSports()
+                    .asLiveData(viewModelScope.coroutineContext + Dispatchers.Default)
+            }catch (error: NetworkErrorException){
+                Failure(error)
+            }
+        }
     }
 
 

@@ -13,6 +13,7 @@ import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.databinding.ListItemOddBinding
 
 class OddListAdapter: ListAdapter<Odd, RecyclerView.ViewHolder>(OddDiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return OddViewHolder(
             ListItemOddBinding.inflate(
@@ -27,6 +28,7 @@ class OddListAdapter: ListAdapter<Odd, RecyclerView.ViewHolder>(OddDiffCallback(
         val odd = getItem(position)
         (holder as OddViewHolder).bind(odd)
     }
+
 
     class OddViewHolder(
         private val binding: ListItemOddBinding
@@ -58,7 +60,6 @@ class OddListAdapter: ListAdapter<Odd, RecyclerView.ViewHolder>(OddDiffCallback(
         }
     }
 
-
 }
 
 private class OddDiffCallback : DiffUtil.ItemCallback<Odd>() {
@@ -70,16 +71,4 @@ private class OddDiffCallback : DiffUtil.ItemCallback<Odd>() {
     override fun areContentsTheSame(oldItem: Odd, newItem: Odd): Boolean {
         return oldItem == newItem
     }
-}
-
-sealed class DataItem {
-    data class OddItem(val odd: Odd): DataItem() {
-        override val id = odd.oddsKey
-    }
-
-    data class Header(val typeName: String): DataItem() {
-        override val id = typeName.hashCode().toLong()
-    }
-
-    abstract val id: Long
 }

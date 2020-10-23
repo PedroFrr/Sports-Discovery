@@ -6,7 +6,7 @@ import java.util.*
 
 @Entity(tableName = "Odd")
 data class Odd(
-    @PrimaryKey(autoGenerate = true) val oddsKey: Int = 0,
+    @PrimaryKey(autoGenerate = true) val oddsKey: Long = 0,
     val sportsKey: String,
     val startTime: String,
     val homeTeam: String,
