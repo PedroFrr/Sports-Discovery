@@ -3,18 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
-
-        <variable
-            name="odd"
-            type="com.pedrofr.sportsfinder.data.model.Odd" />
-    </data>
-
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,16 +21,15 @@
                 android:id="@+id/eventStartTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
                 android:layout_gravity="center"
-                android:text="@{odd.startTime}"
+                android:layout_weight="4"
                 tools:text="17:55" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -54,7 +41,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{odd.homeTeam}"
                         tools:text="Real Madrid" />
 
                     <Button
@@ -62,7 +48,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:text="@{Double.toString(odd.homeTeamOdd)}"
                         tools:text="1.22" />
 
                 </LinearLayout>
@@ -84,7 +69,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:text="@{Double.toString(odd.drawOdd)}"
                         tools:text="8.2" />
 
                 </LinearLayout>
@@ -99,7 +83,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{odd.awayTeam}"
                         tools:text="Shakhtar Donetsk" />
 
                     <Button
@@ -107,16 +90,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:text="@{Double.toString(odd.awayTeamOdd)}"
                         tools:text="18" />
 
                 </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
-
-
-
 
     </androidx.cardview.widget.CardView>
 
