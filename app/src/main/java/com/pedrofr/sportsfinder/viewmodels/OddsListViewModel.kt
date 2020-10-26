@@ -12,10 +12,10 @@ class OddsListViewModel(private val repository: SportRepository): ViewModel() {
     var result:LiveData<Result<Any>> = MutableLiveData()
 
     //TODO if this works see what are the advantages of returning Flow. Search about multiple values...
-    fun fetchOdds(sportKey: String){
+    fun fetchEvents(sportKey: String){
         viewModelScope.launch {
             try {
-                result = repository.getOdds(sportKey)
+                result = repository.getEvents(sportKey)
                     .asLiveData(viewModelScope.coroutineContext + Dispatchers.Default)
             }catch (e: NetworkErrorException){
                 //TODO handle network error

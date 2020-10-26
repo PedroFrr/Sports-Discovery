@@ -1,4 +1,4 @@
-package com.pedrofr.sportsfinder
+package com.pedrofr.sportsfinder.ui.sports
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pedrofr.sportsfinder.ui.adapters.SportsListAdapter
+import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading

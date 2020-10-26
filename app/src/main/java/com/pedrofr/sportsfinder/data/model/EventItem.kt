@@ -1,12 +1,12 @@
 package com.pedrofr.sportsfinder.data.model
 
 import com.pedrofr.sportsfinder.R
-import com.pedrofr.sportsfinder.adapters.BaseItem
-import com.pedrofr.sportsfinder.adapters.BaseViewHolder
+import com.pedrofr.sportsfinder.ui.adapters.BaseItem
+import com.pedrofr.sportsfinder.ui.adapters.BaseViewHolder
 import com.pedrofr.sportsfinder.utils.convertHourMinutes
-import kotlinx.android.synthetic.main.list_item_odd.view.*
+import kotlinx.android.synthetic.main.list_item_event.view.*
 
-class OddItem(
+class EventItem(
     val oddsKey: Long = 0,
     val startTime: Long,
     val homeTeam: String,
@@ -16,7 +16,7 @@ class OddItem(
     val drawOdd: Double? = 0.0
 ) : BaseItem() {
 
-    override val layoutId = R.layout.list_item_odd
+    override val layoutId = R.layout.list_item_event
 
     override val uniqueId = oddsKey
 

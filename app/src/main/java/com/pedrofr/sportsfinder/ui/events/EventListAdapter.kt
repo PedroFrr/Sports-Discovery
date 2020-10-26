@@ -1,12 +1,14 @@
-package com.pedrofr.sportsfinder.ui.adapters
+package com.pedrofr.sportsfinder.ui.events
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.pedrofr.sportsfinder.ui.adapters.BaseItem
+import com.pedrofr.sportsfinder.ui.adapters.BaseViewHolder
 
-class OddListAdapter() : ListAdapter<BaseItem, BaseViewHolder>(OddDiffCallback()) {
+class OddListAdapter() : ListAdapter<BaseItem, BaseViewHolder>(EventDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
 
@@ -24,7 +26,7 @@ class OddListAdapter() : ListAdapter<BaseItem, BaseViewHolder>(OddDiffCallback()
 
 }
 
-private class OddDiffCallback : DiffUtil.ItemCallback<BaseItem>() {
+private class EventDiffCallback : DiffUtil.ItemCallback<BaseItem>() {
     override fun areItemsTheSame(oldItem: BaseItem, newItem: BaseItem): Boolean {
         return oldItem.uniqueId == newItem.uniqueId
     }

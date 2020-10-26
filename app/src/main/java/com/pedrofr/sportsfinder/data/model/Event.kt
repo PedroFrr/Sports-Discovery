@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "Odd")
-data class Odd(
+data class Event(
     @PrimaryKey(autoGenerate = true) val oddsKey: Long = 0,
     val sportsKey: String,
     val startTime: Long,

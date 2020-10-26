@@ -9,4 +9,10 @@
 
     <string name="animal_item_image">Picture of Animal</string>
     <string name="draw_label">Draw</string>
+
+    <!-- Strings used for App bottom menu -->
+    <string name="user_account">Account</string>
+    <string name="sports_title">Sports</string>
+
+
 </resources>

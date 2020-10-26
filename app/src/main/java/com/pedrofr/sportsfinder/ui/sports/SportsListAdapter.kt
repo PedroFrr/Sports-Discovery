@@ -1,4 +1,4 @@
-package com.pedrofr.sportsfinder.ui.adapters
+package com.pedrofr.sportsfinder.ui.sports
 
 
 import android.view.LayoutInflater

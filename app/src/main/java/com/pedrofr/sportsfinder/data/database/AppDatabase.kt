@@ -22,14 +22,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.pedrofr.sportsfinder.data.database.dao.SportsDao
-import com.pedrofr.sportsfinder.data.model.Odd
+import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.utils.DATABASE_NAME
 
 /**
  * The Room database for this app
  */
-@Database(entities = [Sport::class, Odd::class], version = 1, exportSchema = false)
+@Database(entities = [Sport::class, Event::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun sportsDao(): SportsDao

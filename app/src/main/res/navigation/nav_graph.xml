@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/SportListFragment">
+    app:startDestination="@id/sportListFragment">
 
     <fragment
-        android:id="@+id/SportListFragment"
-        android:name="com.pedrofr.sportsfinder.SportsListFragment"
+        android:id="@+id/sportListFragment"
+        android:name="com.pedrofr.sportsfinder.ui.sports.SportsListFragment"
         android:label="@string/sport_list_fragment_label"
-        tools:layout="@layout/fragment_animal_list">
+        tools:layout="@layout/fragment_sports_list">
 
         <action
             android:id="@+id/action_listToDetail"
@@ -17,15 +17,21 @@
     </fragment>
     <fragment
         android:id="@+id/SportDetailFragment"
-        android:name="com.pedrofr.sportsfinder.OddListFragment"
+        android:name="com.pedrofr.sportsfinder.ui.events.EventListFragment"
         android:label="@string/sport_detail_fragment_label"
         tools:layout="@layout/fragment_sports_detail">
 
         <action
             android:id="@+id/action_detailToList"
-            app:destination="@id/SportListFragment" />
+            app:destination="@id/sportListFragment" />
         <argument
             android:name="sportsKey"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/userAccountFragment"
+        android:name="com.pedrofr.sportsfinder.ui.user.UserAccountFragment"
+        android:label="fragment_user_account"
+        tools:layout="@layout/fragment_user_account" />
 </navigation>

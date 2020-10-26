@@ -1,4 +1,4 @@
-package com.pedrofr.sportsfinder.adapters
+package com.pedrofr.sportsfinder.ui.adapters
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

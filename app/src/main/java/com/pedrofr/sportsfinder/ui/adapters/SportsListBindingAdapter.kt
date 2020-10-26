@@ -1,4 +1,4 @@
-package com.pedrofr.sportsfinder.adapters
+package com.pedrofr.sportsfinder.ui.adapters
 
 import android.widget.ImageView
 import android.widget.TextView
@@ -6,7 +6,6 @@ import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 

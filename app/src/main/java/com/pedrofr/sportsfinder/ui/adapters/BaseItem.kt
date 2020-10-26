@@ -1,4 +1,4 @@
-package com.pedrofr.sportsfinder.adapters
+package com.pedrofr.sportsfinder.ui.adapters
 
 /**
  * List items used in [BaseViewHolder]. Implement this with items containing data to display

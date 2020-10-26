@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.pedrofr.sportsfinder.data.model.Odd
+import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.data.model.Sport
 
 @Dao
@@ -17,9 +17,9 @@ interface SportsDao {
     fun addSports(sports: List<Sport>)
 
     @Query("SELECT * FROM Odd WHERE sportsKey = :sportsId Order By startTime")
-    fun getOdds(sportsId: String): List<Odd>
+    fun getEvents(sportsId: String): List<Event>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addOdds(odds: List<Odd>)
+    fun addEvents(events: List<Event>)
 
 }

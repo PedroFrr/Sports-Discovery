@@ -1,0 +1,10 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pedrofr.sportsfinder.ui.user.UserAccountFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Add money spent; Current money; Current bets? Manual setup (was won, was lost, I don't want to retrieve the results) -->
+
+</FrameLayout>

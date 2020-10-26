@@ -2,17 +2,13 @@ package com.pedrofr.sportsfinder.data.repository
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.text.format.DateFormat
 import com.pedrofr.sportsfinder.data.database.dao.SportsDao
-import com.pedrofr.sportsfinder.data.model.Odd
+import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class SportRepositoryImpl(
     private val sportsDao: SportsDao,
@@ -61,13 +57,13 @@ class SportRepositoryImpl(
         }
     }
 
-    private suspend fun getOddsDataFromCache(sportsKey: String): List<Odd> {
+    private suspend fun getEventsFromDataCache(sportsKey: String): List<Event> {
         return withContext(Dispatchers.IO) {
-            sportsDao.getOdds(sportsKey)
+            sportsDao.getEvents(sportsKey)
         }
     }
 
-    override suspend fun getOdds(sportKey: String): Flow<Result<List<*>>> {
+    override suspend fun getEvents(sportKey: String): Flow<Result<List<*>>> {
 
         //TODO Handle Loading... Failure...
 
@@ -78,13 +74,13 @@ class SportRepositoryImpl(
                 if (results is Success) {
                     results.data.let { oddsResponse ->
 
-                        if (getOddsDataFromCache(sportKey).isEmpty()) {
+                        if (getEventsFromDataCache(sportKey).isEmpty()) {
                             val pinnacleSite = oddsResponse
                                 .flatMap { it.sites }
                                 .first()
                             val odds = oddsResponse
                                 .map { odds ->
-                                    Odd(
+                                    Event(
                                         sportsKey = odds.sportsKey,
                                         startTime = odds.startTime ,
                                         homeTeam = odds.homeTeam, //TODO see what team is the homeTeam this is not necessarily true
@@ -94,12 +90,12 @@ class SportRepositoryImpl(
                                         awayTeamOdd = pinnacleSite.odds.h2h[2]
                                     )
                                 }
-                            withContext(Dispatchers.IO) { sportsDao.addOdds(odds) }
+                            withContext(Dispatchers.IO) { sportsDao.addEvents(odds) }
                         }
                     }
                 }
             }
-            emit(Success(getOddsDataFromCache(sportKey)))
+            emit(Success(getEventsFromDataCache(sportKey)))
         }.flowOn(Dispatchers.IO)
     }
 

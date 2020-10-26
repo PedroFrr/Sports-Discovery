@@ -4,8 +4,8 @@ import com.pedrofr.sportsfinder.networking.Result
 import kotlinx.coroutines.flow.Flow
 
 interface SportRepository {
-    suspend fun  getSports() : Flow<Result<List<*>>>
+    suspend fun getSports() : Flow<Result<List<*>>>
 
-    suspend fun getOdds(sportKey: String) :  Flow<Result<List<*>>>
+    suspend fun getEvents(sportKey: String) :  Flow<Result<List<*>>>
 
 }

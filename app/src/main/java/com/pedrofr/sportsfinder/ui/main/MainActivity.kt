@@ -1,9 +1,10 @@
-package com.pedrofr.sportsfinder
+package com.pedrofr.sportsfinder.ui.main
 
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import com.pedrofr.sportsfinder.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
