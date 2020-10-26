@@ -2,10 +2,11 @@ package com.pedrofr.sportsfinder.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
-@Entity(tableName = "Odd")
+@Entity(tableName = "Event")
 data class Event(
-    @PrimaryKey(autoGenerate = true) val oddsKey: Long = 0,
+    @PrimaryKey val eventId: String = UUID.randomUUID().toString(),
     val sportsKey: String,
     val startTime: Long,
     val homeTeam: String,

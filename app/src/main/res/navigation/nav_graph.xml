@@ -13,10 +13,10 @@
 
         <action
             android:id="@+id/action_listToDetail"
-            app:destination="@id/SportDetailFragment" />
+            app:destination="@id/EventListFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SportDetailFragment"
+        android:id="@+id/EventListFragment"
         android:name="com.pedrofr.sportsfinder.ui.events.EventListFragment"
         android:label="@string/sport_detail_fragment_label"
         tools:layout="@layout/fragment_sports_detail">

@@ -7,7 +7,7 @@ import com.pedrofr.sportsfinder.utils.convertHourMinutes
 import kotlinx.android.synthetic.main.list_item_event.view.*
 
 class EventItem(
-    val oddsKey: Long = 0,
+    val eventKey: String,
     val startTime: Long,
     val homeTeam: String,
     val awayTeam: String,
@@ -18,7 +18,7 @@ class EventItem(
 
     override val layoutId = R.layout.list_item_event
 
-    override val uniqueId = oddsKey
+    override val uniqueId = eventKey
 
     override fun bind(holder: BaseViewHolder) {
         super.bind(holder)

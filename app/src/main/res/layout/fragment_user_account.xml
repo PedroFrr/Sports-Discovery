@@ -4,7 +4,15 @@
     android:layout_height="match_parent"
     tools:context="com.pedrofr.sportsfinder.ui.user.UserAccountFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <!-- TODO: Add money spent; Current money; Current bets? Manual setup (was won, was lost, I don't want to retrieve the results) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/user_bala"
+
+    </LinearLayout>
 
 </FrameLayout>

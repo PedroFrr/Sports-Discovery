@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.pedrofr.sportsfinder.OddListFragmentArgs
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.ui.adapters.BaseItem
 import com.pedrofr.sportsfinder.data.model.HeaderItem
@@ -54,7 +53,7 @@ class EventListFragment : Fragment() {
 
     private fun updateData() {
         arguments?.let {
-            val args = OddListFragmentArgs.fromBundle(it)
+            val args = EventListFragmentArgs.fromBundle(it)
             val sportsKey = args.sportsKey
             viewModel.fetchEvents(sportsKey)
         }
@@ -84,7 +83,7 @@ class EventListFragment : Fragment() {
     private fun createAlphabetizedOdds(events: List<Event>): MutableList<BaseItem> {
         // Wrap data in list items
         val eventItems = events.map { EventItem(
-            oddsKey = it.oddsKey,
+            eventKey = it.eventId,
             startTime= it.startTime,
             homeTeam= it.homeTeam,
             awayTeam= it.awayTeam,

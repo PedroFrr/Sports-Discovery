@@ -8,7 +8,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.pedrofr.sportsfinder.SportsListFragmentDirections
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.databinding.ListItemSportBinding
 
@@ -63,7 +62,7 @@ class SportsListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCa
 private class SportDiffCallback : DiffUtil.ItemCallback<Sport>() {
 
     override fun areItemsTheSame(oldItem: Sport, newItem: Sport): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.sportId == newItem.sportId
     }
 
     override fun areContentsTheSame(oldItem: Sport, newItem: Sport): Boolean {

@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity(tableName = "Sport")
 data class Sport(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey val sportId: String = UUID.randomUUID().toString(),
     val sports_key: String,
     val title: String,
     val imageUrl: String = ""
