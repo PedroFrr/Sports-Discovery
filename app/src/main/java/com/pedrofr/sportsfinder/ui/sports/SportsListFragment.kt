@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.Failure
@@ -18,9 +18,6 @@ import com.pedrofr.sportsfinder.viewmodels.SportsListViewModel
 import kotlinx.android.synthetic.main.fragment_sports_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class SportsListFragment : Fragment() {
 
     private val sportsListAdapter by lazy { SportsListAdapter() }
@@ -56,7 +53,7 @@ class SportsListFragment : Fragment() {
     private fun initUi() {
         searchEditText.addTextChangedListener(searchTextWatcher)
 
-        animalRecyclerView.apply {
+        sportRecyclerView.apply {
             adapter = sportsListAdapter
             hasFixedSize()
         }
@@ -68,14 +65,27 @@ class SportsListFragment : Fragment() {
         viewModel.result.observe(viewLifecycleOwner, { result ->
             //TODO Handle Failure, loading....
             when (result) {
+                is Loading -> {
+                    statusButton.visibility = View.GONE
+                    sportRecyclerView.visibility = View.GONE
+                    loadingProgressBar.visibility = View.VISIBLE
+                }
                 is Success -> {
+                    statusButton.visibility = View.GONE
+                    sportRecyclerView.visibility = View.VISIBLE
+                    loadingProgressBar.visibility = View.GONE
                     sportsListAdapter.submitList(((result) as Success<List<Sport>>).data)
                 }
-                is Loading -> {
-                    //TODO handle loading
-                }
+                //TODO Handle failure, for now only internet error is accounted
                 is Failure -> {
-                    //TODO handle failure
+                    statusButton.visibility = View.VISIBLE
+                    context?.let {
+                        statusButton.setCompoundDrawables(
+                            null, ContextCompat.getDrawable(it, R.drawable.no_internet), null,
+                            null)
+                    }
+                    sportRecyclerView.visibility = View.GONE
+                    loadingProgressBar.visibility = View.GONE
                 }
             }
         })

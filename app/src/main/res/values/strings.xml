@@ -27,5 +27,6 @@
     <string name="no_internet">No Internet</string>
     <string name="invalid_api_key">Invalid TMDb API Key</string>
     <string name="attribution_message">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+    <string name="search_event">Search events</string>
 
 </resources>

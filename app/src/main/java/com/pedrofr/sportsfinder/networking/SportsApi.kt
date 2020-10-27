@@ -1,6 +1,6 @@
 package com.pedrofr.sportsfinder.networking
 
-import com.pedrofr.sportsfinder.networking.response.OddsResponse
+import com.pedrofr.sportsfinder.networking.response.EventResponse
 import com.pedrofr.sportsfinder.networking.response.SportsResponse
 
 class SportsApi(private val apiService: SportsService) {
@@ -14,7 +14,7 @@ class SportsApi(private val apiService: SportsService) {
                 Failure(error)
             }
 
-    suspend fun getOdds(sportKey: String): Result<List<OddsResponse>> =
+    suspend fun getOdds(sportKey: String): Result<List<EventResponse>> =
         try {
             val response = apiService.getOdds(sport = sportKey)
             val results = response.results

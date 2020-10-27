@@ -22,10 +22,16 @@ interface SportsDao {
     suspend fun insertSports(sports: List<Sport>)
 
     /*
-    Returns the list of events for the specified Sport
+    Returns the list of events for the specified Sport. Ordered by ASC date
      */
-    @Query("SELECT * FROM Event WHERE sportsKey = :sportsId Order By startTime")
+    @Query("SELECT * FROM Event WHERE sportsKey = :sportsId ORDER BY startTime")
     fun getEvents(sportsId: String): List<Event>
+
+    /*
+    Returns the last event (last meaning last date)
+     */
+    @Query("SELECT * FROM Event WHERE sportsKey = :sportsId ORDER BY startTime DESC LIMIT 1 ")
+    fun getLastEvent(sportsId: String): Event?
 
     /*
     Inserts a list of events to the DB
@@ -38,7 +44,7 @@ interface SportsDao {
          */
     @Transaction
     @Query("SELECT * FROM User WHERE userId = :userId")
-    fun getUserWithBets(userId: String): List<UserWithBets>
+    fun getUserWithBets(userId: String): List<UserWithBets>?
 
     /*
     Returns User Detail by id

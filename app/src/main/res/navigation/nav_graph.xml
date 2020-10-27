@@ -19,7 +19,7 @@
         android:id="@+id/EventListFragment"
         android:name="com.pedrofr.sportsfinder.ui.events.EventListFragment"
         android:label="@string/sport_detail_fragment_label"
-        tools:layout="@layout/fragment_sports_detail">
+        tools:layout="@layout/fragment_events_list">
 
         <argument
             android:name="sportsKey"

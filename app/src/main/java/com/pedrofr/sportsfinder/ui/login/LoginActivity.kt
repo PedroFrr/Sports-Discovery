@@ -59,6 +59,7 @@ class LoginActivity : AppCompatActivity() {
     private fun navigateToMainScreen() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun checkIfUserLoggedIn() {

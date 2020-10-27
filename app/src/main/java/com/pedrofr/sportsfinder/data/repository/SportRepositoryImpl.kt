@@ -35,22 +35,21 @@ class SportRepositoryImpl(
 
     override suspend fun getEvents(sportKey: String): Flow<Result<List<*>>> {
 
-        //TODO Handle Loading... Failure...
-
         return flow {
             emit(Loading)
             networkStatusChecker.performIfConnectedToInternet {
                 val results = sportsApi.getOdds(sportKey)
                 if (results is Success) {
                     results.data.let { oddsResponse ->
-
-                        if (getEventsFromDataCache(sportKey).isEmpty()) {
-                            //TODO Not yet filtered, I'm only retrieving the first Result Site IMPROVEEEEEEEEEE
-                            val pinnacleSite = oddsResponse
-                                .flatMap { it.sites }
-                                .first()
+                        //If we have an event date not on DB, add it
+                        //TODO only add the new event, no need to delete everything and add
+                        val lastSavedEventDate = sportsDao.getLastEvent(sportKey)?.startTime
+                        val lastReturnedEventDate = oddsResponse.last().startTime
+                        if ( lastSavedEventDate != lastReturnedEventDate) {
                             val events = oddsResponse
                                 .map { odds ->
+                                    val pinnacleSite = odds.sites
+                                        .first()
                                     val homeTeamPosition = odds.teams.indexOf(odds.homeTeam)
                                     val awayTeamPosition = if (homeTeamPosition == 0) {
                                         1
@@ -104,6 +103,7 @@ class SportRepositoryImpl(
                 val results = sportsApi.loadSports()
                 if (results is Success) {
                     results.data.let { sportsResponse ->
+
                         if (getSportsDataFromCache().isEmpty()) {
                             val sports = sportsResponse
                                 .filter { it.group.contains("soccer", true) }
