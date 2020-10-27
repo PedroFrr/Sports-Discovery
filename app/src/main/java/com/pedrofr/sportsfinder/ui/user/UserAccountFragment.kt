@@ -6,16 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.pedrofr.sportsfinder.R
-import com.pedrofr.sportsfinder.data.model.Sport
-import com.pedrofr.sportsfinder.data.model.User
-import com.pedrofr.sportsfinder.ui.sports.SportsListFragmentDirections
 import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
 import kotlinx.android.synthetic.main.fragment_user_account.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Observer
 
 class UserAccountFragment() : Fragment() {
 
@@ -42,10 +37,16 @@ class UserAccountFragment() : Fragment() {
             navigateToListBets(view)
         }
 
-        viewModel.result.observe(viewLifecycleOwner) {user ->
-            userBalance.text = user.balance.toString()
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            user?.let{
+                userBalance.text = it.balance.toString()
+            }
+
         }
 
+        viewModel.numberBets.observe(viewLifecycleOwner) { betsNumber ->
+            numberOfBets.text = betsNumber.toString()
+        }
 
     }
 
@@ -57,5 +58,6 @@ class UserAccountFragment() : Fragment() {
             )
         view.findNavController().navigate(direction)
     }
+
 
 }

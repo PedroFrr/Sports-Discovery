@@ -44,12 +44,4 @@
             android:name="userId"
             app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.pedrofr.sportsfinder.ui.login.LoginFragment"
-        android:label="LoginFragment" >
-        <action
-            android:id="@+id/action_loginToSport"
-            app:destination="@id/SportListFragment" />
-    </fragment>
 </navigation>

@@ -11,11 +11,15 @@ class UserViewModel(
     private val repository: SportRepository,
     private val sharedPrefs: SharedPrefManager) : ViewModel(){
 
-    val result: LiveData<User> = liveData {
+    val user: LiveData<User?> = liveData {
         val loggedInUserId = sharedPrefs.getLoggedInUserId()
         emit(repository.getUserDetail(loggedInUserId))
     }
 
-    fun getUserDetail() = result
+    val numberBets = liveData {
+        val userId = sharedPrefs.getLoggedInUserId()
+        emit(repository.getNumberOfUserBets(userId))
+    }
+
 
 }

@@ -19,7 +19,7 @@ interface SportsDao {
     Inserts a list of sports to the DB
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSports(sports: List<Sport>)
+    suspend fun insertSports(sports: List<Sport>)
 
     /*
     Returns the list of events for the specified Sport
@@ -31,7 +31,7 @@ interface SportsDao {
     Inserts a list of events to the DB
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addEvents(events: List<Event>)
+    suspend fun insertEvents(events: List<Event>)
 
     /*
         Returns all the bets made by the specified User
@@ -41,9 +41,33 @@ interface SportsDao {
     fun getUserWithBets(userId: String): List<UserWithBets>
 
     /*
-    Returns User Detail
+    Returns User Detail by id
      */
     @Query("SELECT * FROM User WHERE userId = :userId")
-    suspend fun getUserDetail(userId: String): User
+    suspend fun getUserDetailById(userId: String): User?
+
+    /*
+    Returns number of bets for a given User
+     */
+    @Query("SELECT COUNT(*) FROM Bet WHERE userCreatorId = :userId")
+    suspend fun getNumberOfUserBets(userId: String): Int
+
+    /*
+    Creates a new User
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun createNewUser(user: User)
+
+    /*
+    Returns User Detail by Username
+     */
+    @Query("SELECT * FROM User WHERE username = :username")
+    fun getUserDetailByUsername(username: String): User?
+
+    /*
+    Returns the list of Sports filtered by name
+     */
+    @Query("SELECT * FROM Sport WHERE title LIKE '%' || :sportTitle || '%' ")
+    fun fetchSportsByTitle(sportTitle: String): List<Sport>
 
 }

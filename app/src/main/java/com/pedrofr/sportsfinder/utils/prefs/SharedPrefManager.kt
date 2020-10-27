@@ -10,10 +10,11 @@ class SharedPrefManager(
 
     private val prefs = context.getSharedPreferences(SPORTS_SHARED_PREFS, Context.MODE_PRIVATE)
 
-    fun setLoggedInUserId(userId: String){
+    fun setLoggedInUserId(userId: String?){
         prefs.edit().putString(USER_ID, userId).apply()
     }
 
-    fun getLoggedInUserId() = prefs.getString(USER_ID, "1") ?: "1"
+    fun getLoggedInUserId() = prefs.getString(USER_ID, "") ?: "1"
+
 
 }

@@ -12,7 +12,7 @@ val viewModelModule = module {
 
     viewModel { OddsListViewModel(get()) }
 
-    viewModel { LoginViewModel(get()) }
+    viewModel { LoginViewModel(get(), get()) }
 
     viewModel { UserViewModel(get(), get()) }
 }

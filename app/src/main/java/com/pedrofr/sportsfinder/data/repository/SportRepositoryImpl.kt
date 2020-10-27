@@ -26,37 +26,6 @@ class SportRepositoryImpl(
     It will first check if there's an Internet Connection. If there is we retrieve the results from the API directly and return the data
     Otherwise we'll return from the DB (can be empty if accessed for the first time)
      */
-    override suspend fun getSports(): Flow<Result<List<*>>> {
-        return flow {
-            networkStatusChecker.performIfConnectedToInternet {
-                //Retrieves API results if there's a Internet Connection
-                val results = sportsApi.loadSports()
-                if (results is Success) {
-                    results.data.let { sportsResponse ->
-                        if (getSportsDataFromCache().isEmpty()) {
-                            val sports = sportsResponse
-                                .filter { it.group.contains("soccer", true) }
-                                .map {
-                                    //TODO replace with more attributes with time
-                                    Sport(
-                                        sports_key = it.key,
-                                        title = it.title
-                                    )
-                                }
-                            withContext(Dispatchers.IO) { sportsDao.addSports(sports) }
-                        }
-                    }
-                }
-            }
-            emit(Success(getSportsDataFromCache()))
-        }
-    }
-
-    private suspend fun getSportsDataFromCache(): List<Sport> {
-        return withContext(Dispatchers.IO) {
-            sportsDao.getSports()
-        }
-    }
 
     private suspend fun getEventsFromDataCache(sportsKey: String): List<Event> {
         return withContext(Dispatchers.IO) {
@@ -76,25 +45,29 @@ class SportRepositoryImpl(
                     results.data.let { oddsResponse ->
 
                         if (getEventsFromDataCache(sportKey).isEmpty()) {
-                            //TODO Not yet filtered, I'm only retrieving the first Result Site
+                            //TODO Not yet filtered, I'm only retrieving the first Result Site IMPROVEEEEEEEEEE
                             val pinnacleSite = oddsResponse
                                 .flatMap { it.sites }
                                 .first()
-                            val odds = oddsResponse
+                            val events = oddsResponse
                                 .map { odds ->
                                     val homeTeamPosition = odds.teams.indexOf(odds.homeTeam)
-                                    val awayTeamPosition = if(homeTeamPosition==0){1}else{0}
+                                    val awayTeamPosition = if (homeTeamPosition == 0) {
+                                        1
+                                    } else {
+                                        0
+                                    }
                                     Event(
                                         sportsKey = odds.sportsKey,
                                         startTime = odds.startTime,
                                         homeTeam = odds.homeTeam, //TODO see what team is the homeTeam this is not necessarily true
                                         awayTeam = odds.teams.first { team -> team != odds.homeTeam },
                                         homeTeamOdd = pinnacleSite.odds.h2h[homeTeamPosition],
-                                        awayTeamOdd = pinnacleSite.odds.h2h[2],
+                                        awayTeamOdd = pinnacleSite.odds.h2h[awayTeamPosition],
                                         drawOdd = pinnacleSite.odds.h2h[2]
                                     )
                                 }
-                            withContext(Dispatchers.IO) { sportsDao.addEvents(odds) }
+                            sportsDao.insertEvents(events)
                         }
                     }
                 }
@@ -103,7 +76,58 @@ class SportRepositoryImpl(
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun getUserDetail(userId: String): User = sportsDao.getUserDetail(userId)
+    override suspend fun getUserDetail(userId: String): User? = sportsDao.getUserDetailById(userId)
+
+    override suspend fun getNumberOfUserBets(userId: String): Int =
+        sportsDao.getNumberOfUserBets(userId)
+
+    override suspend fun createUser(user: User) = sportsDao.createNewUser(user)
+
+    override fun getUserDetailByUsername(username: String): User? = sportsDao.getUserDetailByUsername(username)
+
+    override suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>> {
+        return flow {
+            emit(Loading)
+            if(query.length < 2){
+                emit(Success(getSports()))
+            }else{
+                emit(Success(sportsDao.fetchSportsByTitle(query)))
+            }
+        }.flowOn(Dispatchers.IO)
+
+    }
+
+    private suspend fun getSports(): List<Sport> {
+
+            networkStatusChecker.performIfConnectedToInternet {
+                //Retrieves API results if there's a Internet Connection
+                val results = sportsApi.loadSports()
+                if (results is Success) {
+                    results.data.let { sportsResponse ->
+                        if (getSportsDataFromCache().isEmpty()) {
+                            val sports = sportsResponse
+                                .filter { it.group.contains("soccer", true) }
+                                .map {
+                                    //TODO replace with more attributes with time
+                                    Sport(
+                                        sports_key = it.key,
+                                        title = it.title
+                                    )
+                                }
+                            sportsDao.insertSports(sports)
+                        }
+                    }
+                }
+            }
+            return (sportsDao.getSports())
+
+    }
+
+    private suspend fun getSportsDataFromCache(): List<Sport> {
+        return withContext(Dispatchers.IO) {
+            sportsDao.getSports()
+        }
+    }
 
 
 }

@@ -1,6 +1,8 @@
 package com.pedrofr.sportsfinder.ui.sports
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +23,20 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class SportsListFragment : Fragment() {
 
-    private val adapter by lazy { SportsListAdapter() }
-    private val viewModel : SportsListViewModel by viewModel()
+    private val sportsListAdapter by lazy { SportsListAdapter() }
+    private val viewModel: SportsListViewModel by viewModel()
+
+    private val searchTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(editable: Editable?) {
+            val searchedTitle = editable.toString()
+            viewModel.fetchSportsByTitle(searchedTitle)
+
+        }
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,22 +49,27 @@ class SportsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
-        loadSportsList()
+        initObservables()
 
     }
 
     private fun initUi() {
-        animalRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        animalRecyclerView.adapter = adapter
+        searchEditText.addTextChangedListener(searchTextWatcher)
+
+        animalRecyclerView.apply {
+            adapter = sportsListAdapter
+            hasFixedSize()
+        }
+
+        viewModel.fetchSportsByTitle("") //Retrieve all sports
     }
 
-    private fun loadSportsList(){
-        viewModel.fetchSports()
+    private fun initObservables() {
         viewModel.result.observe(viewLifecycleOwner, { result ->
             //TODO Handle Failure, loading....
-            when (result){
+            when (result) {
                 is Success -> {
-                    adapter.submitList(((result) as Success<List<Sport>>).data)
+                    sportsListAdapter.submitList(((result) as Success<List<Sport>>).data)
                 }
                 is Loading -> {
                     //TODO handle loading
