@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val sportsListDestination: Int = R.id.sportListFragment
+    private val sportsListDestination: Int = R.id.SportListFragment
     private val userAccountDestination: Int = R.id.userAccountFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {

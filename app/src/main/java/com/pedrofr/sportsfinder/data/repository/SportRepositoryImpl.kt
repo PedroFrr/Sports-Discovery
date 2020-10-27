@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import com.pedrofr.sportsfinder.data.database.dao.SportsDao
 import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.data.model.Sport
+import com.pedrofr.sportsfinder.data.model.User
 import com.pedrofr.sportsfinder.networking.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -75,19 +76,22 @@ class SportRepositoryImpl(
                     results.data.let { oddsResponse ->
 
                         if (getEventsFromDataCache(sportKey).isEmpty()) {
+                            //TODO Not yet filtered, I'm only retrieving the first Result Site
                             val pinnacleSite = oddsResponse
                                 .flatMap { it.sites }
                                 .first()
                             val odds = oddsResponse
                                 .map { odds ->
+                                    val homeTeamPosition = odds.teams.indexOf(odds.homeTeam)
+                                    val awayTeamPosition = if(homeTeamPosition==0){1}else{0}
                                     Event(
                                         sportsKey = odds.sportsKey,
-                                        startTime = odds.startTime ,
+                                        startTime = odds.startTime,
                                         homeTeam = odds.homeTeam, //TODO see what team is the homeTeam this is not necessarily true
                                         awayTeam = odds.teams.first { team -> team != odds.homeTeam },
-                                        homeTeamOdd = pinnacleSite.odds.h2h[0],
-                                        drawOdd = pinnacleSite.odds.h2h[1],
-                                        awayTeamOdd = pinnacleSite.odds.h2h[2]
+                                        homeTeamOdd = pinnacleSite.odds.h2h[homeTeamPosition],
+                                        awayTeamOdd = pinnacleSite.odds.h2h[2],
+                                        drawOdd = pinnacleSite.odds.h2h[2]
                                     )
                                 }
                             withContext(Dispatchers.IO) { sportsDao.addEvents(odds) }
@@ -98,6 +102,8 @@ class SportRepositoryImpl(
             emit(Success(getEventsFromDataCache(sportKey)))
         }.flowOn(Dispatchers.IO)
     }
+
+    override suspend fun getUserDetail(userId: String): User = sportsDao.getUserDetail(userId)
 
 
 }

@@ -33,12 +33,12 @@ class SportsListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCa
         init {
             binding.setClickListener {
                 binding.sport?.let { sport ->
-                    navigateToOdds(sport, it)
+                    navigateToEventList(sport, it)
                 }
             }
         }
 
-        private fun navigateToOdds(
+        private fun navigateToEventList(
             sport: Sport,
             view: View
         ) {

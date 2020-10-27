@@ -3,6 +3,7 @@ package com.pedrofr.sportsfinder.data.database.dao
 import androidx.room.*
 import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.data.model.Sport
+import com.pedrofr.sportsfinder.data.model.User
 import com.pedrofr.sportsfinder.data.model.UserWithBets
 
 @Dao
@@ -38,5 +39,11 @@ interface SportsDao {
     @Transaction
     @Query("SELECT * FROM User WHERE userId = :userId")
     fun getUserWithBets(userId: String): List<UserWithBets>
+
+    /*
+    Returns User Detail
+     */
+    @Query("SELECT * FROM User WHERE userId = :userId")
+    suspend fun getUserDetail(userId: String): User
 
 }
