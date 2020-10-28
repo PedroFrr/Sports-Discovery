@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class OddsListViewModel(private val repository: SportRepository): ViewModel() {
+class EventsListViewModel(private val repository: SportRepository): ViewModel() {
 
     private var debouncePeriod: Long = 500
     private var searchJob: Job? = null

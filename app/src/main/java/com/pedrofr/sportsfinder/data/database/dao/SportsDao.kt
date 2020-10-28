@@ -76,4 +76,10 @@ interface SportsDao {
     @Query("SELECT * FROM Sport WHERE title LIKE '%' || :sportTitle || '%' ")
     fun fetchSportsByTitle(sportTitle: String): List<Sport>
 
+    /*
+    Updates the user balance
+     */
+    @Query("UPDATE User SET balance = :newBalance WHERE userId = :userId")
+    fun updateUserBalance(userId: String, newBalance: Long)
+
 }

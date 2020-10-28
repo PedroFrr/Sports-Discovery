@@ -15,11 +15,10 @@ import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading
 import com.pedrofr.sportsfinder.networking.Success
 import com.pedrofr.sportsfinder.utils.convertToDayMonth
-import com.pedrofr.sportsfinder.viewmodels.OddsListViewModel
+import com.pedrofr.sportsfinder.viewmodels.EventsListViewModel
 import kotlinx.android.synthetic.main.fragment_events_list.*
 import kotlinx.android.synthetic.main.fragment_events_list.loadingProgressBar
 import kotlinx.android.synthetic.main.fragment_events_list.statusButton
-import kotlinx.android.synthetic.main.fragment_sports_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -28,7 +27,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class EventListFragment : Fragment() {
 
     private val eventsAdapter by lazy { OddListAdapter() }
-    private val viewModel: OddsListViewModel by viewModel()
+    private val viewModel: EventsListViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
