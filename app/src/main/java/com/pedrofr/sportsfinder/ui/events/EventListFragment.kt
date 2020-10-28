@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class EventListFragment : Fragment() {
 
-    private val eventsAdapter by lazy { EventListAdapter() }
+    private val eventsAdapter by lazy { EventListAdapter(::onClickListener) }
     private val viewModel: EventsListViewModel by viewModel()
 
     override fun onCreateView(
@@ -114,7 +114,7 @@ class EventListFragment : Fragment() {
     }
 
     private fun onDrawSelection() {
-        //TODO Handle home team selection -> Create new Bet with this team and odd...
+        Toast.makeText(activity, "Home Team Selected", Toast.LENGTH_SHORT).show()
     }
 
     private fun onClickListener( v: View){
@@ -123,9 +123,10 @@ class EventListFragment : Fragment() {
                 Toast.makeText(activity, "Home Team Selected", Toast.LENGTH_SHORT).show()
             }
             R.id.awayTeamOddBtn -> {
-
+                Toast.makeText(activity, "AwayTeam Selected", Toast.LENGTH_SHORT).show()
             }
             R.id.drawOddBtn -> {
+                Toast.makeText(activity, "Draw Team Selected", Toast.LENGTH_SHORT).show()
             }
         }
     }
