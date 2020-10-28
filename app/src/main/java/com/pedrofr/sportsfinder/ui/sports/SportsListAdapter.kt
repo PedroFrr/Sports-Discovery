@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.databinding.ListItemSportBinding
 
-class SportsListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCallback()) {
+class SportsListAdapter(): ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SportViewHolder(
             ListItemSportBinding.inflate(
@@ -37,6 +37,7 @@ class SportsListAdapter: ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCa
                 }
             }
         }
+
 
         private fun navigateToEventList(
             sport: Sport,

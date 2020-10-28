@@ -1,10 +1,7 @@
 package com.pedrofr.sportsfinder.data.database.dao
 
 import androidx.room.*
-import com.pedrofr.sportsfinder.data.model.Event
-import com.pedrofr.sportsfinder.data.model.Sport
-import com.pedrofr.sportsfinder.data.model.User
-import com.pedrofr.sportsfinder.data.model.UserWithBets
+import com.pedrofr.sportsfinder.data.model.*
 
 @Dao
 interface SportsDao {
@@ -81,5 +78,17 @@ interface SportsDao {
      */
     @Query("UPDATE User SET balance = :newBalance WHERE userId = :userId")
     fun updateUserBalance(userId: String, newBalance: Long)
+
+    /*
+    Creates a new bet record
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBet(bet: Bet)
+
+    /*
+    Retrieve user temporary bets
+     */
+    @Query("SELECT * FROM Bet WHERE isPending = 1 AND userCreatorId = :userId")
+    fun getPendingBets(userId: String): List<Bet>
 
 }

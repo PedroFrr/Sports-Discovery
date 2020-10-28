@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
+import com.pedrofr.sportsfinder.viewmodels.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_account.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel

@@ -9,6 +9,7 @@ data class Bet(
     @PrimaryKey val betId: String = UUID.randomUUID().toString(),
     val userCreatorId: String,
     val wageredAmount: Double,
-    val totalOdd: Double,
-    val isSettled: Boolean = false
+    val totalOdd: Double = 0.0,
+    val isSettled: Boolean = false,
+    val isPending: Boolean = false //If it's pending it shouldn't appear on the Betting History but only on the Bottom Sheet
 )

@@ -1,4 +1,4 @@
-package com.pedrofr.sportsfinder.ui.user
+package com.pedrofr.sportsfinder.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

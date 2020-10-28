@@ -20,8 +20,4 @@ fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
     }
 }
 
-@BindingAdapter("startTime")
-fun bindStartTime(view: TextView, startDate: Date) {
-    val date = DateFormat.getDateInstance(DateFormat.SHORT).format(startDate)
-    view.text = date
-}
+

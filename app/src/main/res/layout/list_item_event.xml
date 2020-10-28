@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="event"
+            type="com.pedrofr.sportsfinder.data.model.Event"/>
+    </data>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
+                app:startTime="@{event.startTime}"
                 tools:text="17:55" />
 
             <LinearLayout
@@ -41,13 +48,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@{event.homeTeam}"
                         tools:text="Real Madrid" />
 
                     <Button
-                        android:id="@+id/homeTeamOdd"
+                        android:id="@+id/homeTeamOddBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
+                        android:text="@{Double.toString(event.homeTeamOdd)}"
                         tools:text="1.22" />
 
                 </LinearLayout>
@@ -65,10 +74,11 @@
                         android:text="@string/draw_label" />
 
                     <Button
-                        android:id="@+id/drawOdd"
+                        android:id="@+id/drawOddBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
+                        android:text="@{Double.toString(event.drawOdd)}"
                         tools:text="8.2" />
 
                 </LinearLayout>
@@ -83,13 +93,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@{event.awayTeam}"
                         tools:text="Shakhtar Donetsk" />
 
                     <Button
-                        android:id="@+id/awayTeamOdd"
+                        android:id="@+id/awayTeamOddBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
+                        android:text="@{Double.toString(event.awayTeamOdd)}"
                         tools:text="18" />
 
                 </LinearLayout>

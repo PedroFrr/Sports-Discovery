@@ -18,4 +18,6 @@ interface SportRepository {
     fun getUserDetailByUsername(username: String): User?
 
     suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>>
+
+    suspend fun fetchPendingBets(userId: String): Flow<Result<List<*>>>
 }
