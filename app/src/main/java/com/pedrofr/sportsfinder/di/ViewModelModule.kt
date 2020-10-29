@@ -7,7 +7,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModel { SportsListViewModel(get()) }
 
-    viewModel { EventsListViewModel(get()) }
+    viewModel { EventsListViewModel(get(), get()) }
 
     viewModel { LoginViewModel(get(), get()) }
 

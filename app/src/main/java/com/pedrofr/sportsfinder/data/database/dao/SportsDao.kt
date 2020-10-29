@@ -83,7 +83,7 @@ interface SportsDao {
     Creates a new bet record
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBet(bet: Bet)
+    suspend fun insertBet(bet: Bet)
 
     /*
     Retrieve user temporary bets

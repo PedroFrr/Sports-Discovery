@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.pedrofr.sportsfinder.R
+import com.pedrofr.sportsfinder.data.model.Bet
 import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading
@@ -105,22 +106,10 @@ class EventListFragment : Fragment() {
         return eventsWithHeaders
     }
 
-    private fun onHomeTeamSelection() {
-        Toast.makeText(activity, "Home Team Selected", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun onAwayTeamSelection() {
-        //TODO Handle home team selection -> Create new Bet with this team and odd...
-    }
-
-    private fun onDrawSelection() {
-        Toast.makeText(activity, "Home Team Selected", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun onClickListener( v: View){
+    private fun onClickListener(v: View, event: Event){
         when (v.id) {
             R.id.homeTeamOddBtn -> {
-                Toast.makeText(activity, "Home Team Selected", Toast.LENGTH_SHORT).show()
+                viewModel.setPendingBet(event.homeTeamOdd)
             }
             R.id.awayTeamOddBtn -> {
                 Toast.makeText(activity, "AwayTeam Selected", Toast.LENGTH_SHORT).show()

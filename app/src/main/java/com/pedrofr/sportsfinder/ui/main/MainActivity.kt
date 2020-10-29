@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 is Success -> {
-                    val pendingBets = (result as Success<List<BaseItem>>).data
+                    val pendingBets = (result as Success<List<Bet>>).data
                     pendingBetsAdapter.submitList(pendingBets)
                 }
                 is Failure -> {

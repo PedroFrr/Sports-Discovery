@@ -1,5 +1,6 @@
 package com.pedrofr.sportsfinder.data.repository
 
+import com.pedrofr.sportsfinder.data.model.Bet
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.data.model.User
 import com.pedrofr.sportsfinder.networking.Result
@@ -20,4 +21,6 @@ interface SportRepository {
     suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>>
 
     suspend fun fetchPendingBets(userId: String): Flow<Result<List<*>>>
+
+    suspend fun createPendingBet(bet: Bet)
 }

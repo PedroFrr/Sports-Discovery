@@ -3,10 +3,12 @@ package com.pedrofr.sportsfinder.data.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import com.pedrofr.sportsfinder.data.database.dao.SportsDao
+import com.pedrofr.sportsfinder.data.model.Bet
 import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.data.model.User
 import com.pedrofr.sportsfinder.networking.*
+import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -132,8 +134,12 @@ class SportRepositoryImpl(
     override suspend fun fetchPendingBets(userId: String): Flow<Result<List<*>>> {
         return flow{
             emit(Loading)
-            sportsDao.getPendingBets(userId)
+            emit(Success(sportsDao.getPendingBets(userId)))
         }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun createPendingBet(bet: Bet) {
+        sportsDao.insertBet(bet)
     }
 }
 
