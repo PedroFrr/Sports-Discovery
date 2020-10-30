@@ -131,12 +131,7 @@ class SportRepositoryImpl(
         }
     }
 
-    override suspend fun fetchPendingBets(userId: String): Flow<Result<List<*>>> {
-        return flow{
-            emit(Loading)
-            emit(Success(sportsDao.getPendingBets(userId)))
-        }.flowOn(Dispatchers.IO)
-    }
+    override fun fetchPendingBets(userId: String): Flow<List<Bet>> = sportsDao.getPendingBets(userId)
 
     override suspend fun createPendingBet(bet: Bet) {
         sportsDao.insertBet(bet)

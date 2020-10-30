@@ -20,7 +20,7 @@ interface SportRepository {
 
     suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>>
 
-    suspend fun fetchPendingBets(userId: String): Flow<Result<List<*>>>
+    fun fetchPendingBets(userId: String): Flow<List<Bet>>
 
     suspend fun createPendingBet(bet: Bet)
 }

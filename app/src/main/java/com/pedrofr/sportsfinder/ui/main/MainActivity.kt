@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pedrofr.sportsfinder.R
@@ -19,12 +20,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private val pendingBetsAdapter by lazy { PendingBetsAdapter() }
     private val viewModel: MainActivityViewModel by viewModel()
     private val sharedPrefs by inject<SharedPrefManager> ()
+    private val userId = sharedPrefs.getLoggedInUserId()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,11 +59,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initUi() {
+
         val bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet)
+
 
         floatingActionButton.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+//                viewModel.fetchPendingBets(userId)
             } else {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
@@ -71,8 +77,8 @@ class MainActivity : AppCompatActivity() {
             hasFixedSize()
         }
 
-        val userId = sharedPrefs.getLoggedInUserId()
-        viewModel.fetchPendingBets(userId)
+
+
     }
 
 
@@ -81,19 +87,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservables() {
-        viewModel.result.observe(this, { result ->
-            when (result) {
-                is Loading -> {
-
-                }
-                is Success -> {
-                    val pendingBets = (result as Success<List<Bet>>).data
-                    pendingBetsAdapter.submitList(pendingBets)
-                }
-                is Failure -> {
-
-                }
-            }
+        viewModel.result.observe(this, Observer {
+            pendingBetsAdapter.submitList(it)
         })
     }
 
