@@ -1,23 +1,18 @@
 package com.pedrofr.sportsfinder.viewmodels
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.asLiveData
 import com.pedrofr.sportsfinder.data.repository.SportRepository
-import com.pedrofr.sportsfinder.networking.Result
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import com.pedrofr.sportsfinder.networking.Loading
+import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
+import kotlinx.coroutines.flow.onStart
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class MainActivityViewModel(private val repository: SportRepository): ViewModel() {
+class MainActivityViewModel(private val repository: SportRepository): ViewModel(), KoinComponent{
 
-    val result = MutableLiveData<Result<Any>>()
+    private val sharedPrefs by inject<SharedPrefManager> ()
+    private val userId = sharedPrefs.getLoggedInUserId()
 
-    fun fetchPendingBets(userId: String){
-        viewModelScope.launch {
-            repository.fetchPendingBets(userId)
-                .collect {
-                    result.postValue(it)
-                }
-        }
-    }
+    var result = repository.fetchPendingBets(userId).asLiveData()
 }

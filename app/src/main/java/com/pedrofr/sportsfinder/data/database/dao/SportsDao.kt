@@ -2,6 +2,8 @@ package com.pedrofr.sportsfinder.data.database.dao
 
 import androidx.room.*
 import com.pedrofr.sportsfinder.data.model.*
+import com.pedrofr.sportsfinder.networking.Result
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SportsDao {
@@ -83,12 +85,24 @@ interface SportsDao {
     Creates a new bet record
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBet(bet: Bet)
+    suspend fun insertBet(bet: Bet)
 
     /*
     Retrieve user temporary bets
      */
     @Query("SELECT * FROM Bet WHERE isPending = 1 AND userCreatorId = :userId")
-    fun getPendingBets(userId: String): List<Bet>
+    fun getPendingBets(userId: String): Flow<List<Bet>>
+
+    /*
+    Returns the list of events associated with a Bet
+     */
+    @Transaction
+    @Query("SELECT * FROM Bet WHERE userCreatorId = :userId")
+    fun getBetsWithEvents(userId: String): Flow<List<BetWithEvents>>
+
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBetWithEvents(betWithEvents: BetWithEventCrossRef)
+
 
 }

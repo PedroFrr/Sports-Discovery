@@ -5,5 +5,5 @@ import com.pedrofr.sportsfinder.data.repository.SportRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single { SportRepositoryImpl(get(), get(), get() ) as SportRepository }
+    single { SportRepositoryImpl(get(), get(), get()) as SportRepository }
 }

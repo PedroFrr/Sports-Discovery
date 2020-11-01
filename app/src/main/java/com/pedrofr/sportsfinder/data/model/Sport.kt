@@ -9,6 +9,5 @@ import java.util.*
 data class Sport(
     @PrimaryKey val sportId: String = UUID.randomUUID().toString(),
     val sports_key: String,
-    val title: String,
-    val imageUrl: String = ""
+    val title: String
 )

@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.databinding.ListItemEventBinding
-import kotlinx.android.synthetic.main.list_header_item.view.*
+import kotlinx.android.synthetic.main.list_item_event_header.view.*
 import kotlinx.android.synthetic.main.list_item_event.view.*
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
 
-class EventListAdapter(val onClickListener: (v: View) -> Unit) : ListAdapter<DataItem, RecyclerView.ViewHolder>(EventDiffCallback()) {
+class EventListAdapter(private val onClickListener: (v: View, item: Event ) -> Unit) : ListAdapter<DataItem, RecyclerView.ViewHolder>(EventDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -28,7 +28,7 @@ class EventListAdapter(val onClickListener: (v: View) -> Unit) : ListAdapter<Dat
         when (holder) {
             is ViewHolder -> {
                 val eventItem = getItem(position) as DataItem.EventItem
-                holder.bind(eventItem.event)
+                holder.bind(eventItem.event, onClickListener)
             }
             is TextViewHolder -> {
                 val headerItem = getItem(position) as DataItem.Header
@@ -54,36 +54,36 @@ class EventListAdapter(val onClickListener: (v: View) -> Unit) : ListAdapter<Dat
         companion object {
             fun from(parent: ViewGroup): TextViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.list_header_item, parent, false)
+                val view = layoutInflater.inflate(R.layout.list_item_event_header, parent, false)
                 return TextViewHolder(view)
             }
 
         }
     }
 
-
     class ViewHolder private constructor(private val binding: ListItemEventBinding) : RecyclerView.ViewHolder(binding.root){
 
-        fun bind(item: Event) {
+        fun bind(item: Event, onClickListener: (v: View, item: Event ) -> Unit) {
             binding.event = item
+                .apply {
+                    itemView.homeTeamOddBtn.setOnClickListener {
+                        onClickListener(it, item)
+                    }
+                    itemView.awayTeamOddBtn.setOnClickListener {
+                        onClickListener(it, item)
+                    }
+                    itemView.drawOddBtn.setOnClickListener {
+                        onClickListener(it, item)
+                    }
+                }
             binding.executePendingBindings()
         }
 
         companion object {
-            fun from(parent: ViewGroup, onClickListener: (v: View) -> Unit): ViewHolder {
+            fun from(parent: ViewGroup, onClickListener: (v: View, event: Event) -> Unit): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListItemEventBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding).apply {
-                    binding.root.homeTeamOddBtn.setOnClickListener {
-                        onClickListener(it)
-                    }
-                    binding.root.awayTeamOddBtn.setOnClickListener {
-                        onClickListener(it)
-                    }
-                    binding.root.drawOddBtn.setOnClickListener {
-                        onClickListener(it)
-                    }
-                }
+                return ViewHolder(binding)
             }
         }
     }

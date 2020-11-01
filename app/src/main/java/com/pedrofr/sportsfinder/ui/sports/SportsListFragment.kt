@@ -12,6 +12,7 @@ import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading
+import com.pedrofr.sportsfinder.networking.NoResults
 import com.pedrofr.sportsfinder.networking.Success
 import com.pedrofr.sportsfinder.viewmodels.SportsListViewModel
 
@@ -79,9 +80,21 @@ class SportsListFragment : Fragment() {
                 //TODO Handle failure, for now only internet error is accounted
                 is Failure -> {
                     statusButton.visibility = View.VISIBLE
+                    statusButton.text =  getString(R.string.no_internet)
                     context?.let {
                         statusButton.setCompoundDrawables(
                             null, ContextCompat.getDrawable(it, R.drawable.no_internet), null,
+                            null)
+                    }
+                    sportRecyclerView.visibility = View.GONE
+                    loadingProgressBar.visibility = View.GONE
+                }
+                is NoResults -> {
+                    statusButton.visibility = View.VISIBLE
+                    statusButton.text = getString(R.string.no_results)
+                    context?.let {
+                        statusButton.setCompoundDrawables(
+                            null, ContextCompat.getDrawable(it, R.drawable.ic_outline_error_24), null,
                             null)
                     }
                     sportRecyclerView.visibility = View.GONE

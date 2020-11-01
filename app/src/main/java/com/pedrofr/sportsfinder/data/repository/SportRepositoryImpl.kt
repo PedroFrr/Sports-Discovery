@@ -3,12 +3,12 @@ package com.pedrofr.sportsfinder.data.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import com.pedrofr.sportsfinder.data.database.dao.SportsDao
-import com.pedrofr.sportsfinder.data.model.Event
-import com.pedrofr.sportsfinder.data.model.Sport
-import com.pedrofr.sportsfinder.data.model.User
+import com.pedrofr.sportsfinder.data.model.*
 import com.pedrofr.sportsfinder.networking.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 class SportRepositoryImpl(
@@ -45,7 +45,7 @@ class SportRepositoryImpl(
                         //TODO only add the new event, no need to delete everything and add
                         val lastSavedEventDate = sportsDao.getLastEvent(sportKey)?.startTime
                         val lastReturnedEventDate = oddsResponse.last().startTime
-                        if ( lastSavedEventDate != lastReturnedEventDate) {
+                        if (lastSavedEventDate != lastReturnedEventDate) {
                             val events = oddsResponse
                                 .map { odds ->
                                     val pinnacleSite = odds.sites
@@ -82,15 +82,21 @@ class SportRepositoryImpl(
 
     override suspend fun createUser(user: User) = sportsDao.createNewUser(user)
 
-    override fun getUserDetailByUsername(username: String): User? = sportsDao.getUserDetailByUsername(username)
+    override fun getUserDetailByUsername(username: String): User? =
+        sportsDao.getUserDetailByUsername(username)
 
     override suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>> {
         return flow {
             emit(Loading)
-            if(query.length < 2){
+            if (query.length < 2) {
                 emit(Success(getSports()))
-            }else{
-                emit(Success(sportsDao.fetchSportsByTitle(query)))
+            } else {
+                val fetchResultsByQuery = sportsDao.fetchSportsByTitle(query)
+                if (fetchResultsByQuery.isEmpty()) {
+                    emit(NoResults)
+                } else {
+                    emit(Success(fetchResultsByQuery))
+                }
             }
         }.flowOn(Dispatchers.IO)
 
@@ -98,28 +104,28 @@ class SportRepositoryImpl(
 
     private suspend fun getSports(): List<Sport> {
 
-            networkStatusChecker.performIfConnectedToInternet {
-                //Retrieves API results if there's a Internet Connection
-                val results = sportsApi.loadSports()
-                if (results is Success) {
-                    results.data.let { sportsResponse ->
+        networkStatusChecker.performIfConnectedToInternet {
+            //Retrieves API results if there's a Internet Connection
+            val results = sportsApi.loadSports()
+            if (results is Success) {
+                results.data.let { sportsResponse ->
 
-                        if (getSportsDataFromCache().isEmpty()) {
-                            val sports = sportsResponse
-                                .filter { it.group.contains("soccer", true) }
-                                .map {
-                                    //TODO replace with more attributes with time
-                                    Sport(
-                                        sports_key = it.key,
-                                        title = it.title
-                                    )
-                                }
-                            sportsDao.insertSports(sports)
-                        }
+                    if (getSportsDataFromCache().isEmpty()) {
+                        val sports = sportsResponse
+                            .filter { it.group.contains("soccer", true) }
+                            .map {
+                                //TODO replace with more attributes with time
+                                Sport(
+                                    sports_key = it.key,
+                                    title = it.title
+                                )
+                            }
+                        sportsDao.insertSports(sports)
                     }
                 }
             }
-            return (sportsDao.getSports())
+        }
+        return (sportsDao.getSports())
 
     }
 
@@ -129,11 +135,11 @@ class SportRepositoryImpl(
         }
     }
 
-    override suspend fun fetchPendingBets(userId: String): Flow<Result<List<*>>> {
-        return flow{
-            emit(Loading)
-            sportsDao.getPendingBets(userId)
-        }.flowOn(Dispatchers.IO)
-    }
+    override fun fetchPendingBets
+                (userId: String): Flow<List<BetWithEvents>> = sportsDao.getBetsWithEvents(userId)
+
+    override suspend fun createPendingBet(bet: Bet) = sportsDao.insertBet(bet)
+
+    override suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef) = sportsDao.insertBetWithEvents(betWithEvents)
 }
 
