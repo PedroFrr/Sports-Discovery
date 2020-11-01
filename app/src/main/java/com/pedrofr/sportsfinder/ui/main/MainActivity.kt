@@ -17,7 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val pendingBetsAdapter by lazy { PendingBetsAdapter(::onFocusChange) }
+    private val pendingBetsAdapter by lazy { PendingBetsAdapter() }
     private val viewModel: MainActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,11 +95,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.result.observe(this, Observer {
             pendingBetsAdapter.submitList(it)
         })
-    }
-
-    private fun onFocusChange(){
-            //TODO call calculator to display amount
-            Toast.makeText(this, "Changed focus", Toast.LENGTH_SHORT).show()
     }
 
 }

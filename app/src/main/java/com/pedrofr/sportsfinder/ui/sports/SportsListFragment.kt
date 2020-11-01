@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.Failure
@@ -103,4 +104,5 @@ class SportsListFragment : Fragment() {
             }
         })
     }
+
 }

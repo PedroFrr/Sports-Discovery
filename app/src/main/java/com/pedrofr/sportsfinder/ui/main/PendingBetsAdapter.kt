@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.BetWithEvents
+import com.pedrofr.sportsfinder.utils.afterTextChangedDelayed
 import kotlinx.android.synthetic.main.list_item_pending_bet.view.*
 
 
-class PendingBetsAdapter(private val onFocusChange: () -> Unit) :
+class PendingBetsAdapter() :
     ListAdapter<BetWithEvents, PendingBetsAdapter.ViewHolder>(PendingBetDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,15 +23,14 @@ class PendingBetsAdapter(private val onFocusChange: () -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.showData(getItem(position), onFocusChange)
+        holder.showData(getItem(position))
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun showData(
-            pendingBet: BetWithEvents,
-            onFocusChange: () -> Unit
-        ) {
+            pendingBet: BetWithEvents) {
+            val totalOdd = pendingBet.bet.totalOdd
             //TODO Change this values when the data model is finished
             itemView.eventDetails.text = itemView.context.getString(
                 R.string.event_details,
@@ -38,19 +38,15 @@ class PendingBetsAdapter(private val onFocusChange: () -> Unit) :
                 pendingBet.events.first().awayTeam
             ) //TODO this is done wrong. With the correct data model we should be able to associate the event with the Selected team and odd
             itemView.selectedTeamName.text = pendingBet.bet.selectedTeam
-            itemView.selectedOdd.text = pendingBet.bet.totalOdd.toString()
-            itemView.total_edit_text.setText("1000") //TODO change with real value as the user clicks enter
+            itemView.selectedOdd.text = totalOdd.toString()
 
-            itemView.stake_text_input.setOnKeyListener { view, keyCode, keyEvent ->
-                //TODO
-                if ((keyEvent.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    onFocusChange
-                    return@setOnKeyListener true
-
-                }
-                return@setOnKeyListener false
-
+            itemView.stake_edit_text.afterTextChangedDelayed {
+                val amount = it.toDouble()
+                val total = amount.times(totalOdd)
+                itemView.total_edit_text.setText(String.format("%.2f", total)) //Rounds the number of decimal field to 2
             }
+
+
         }
 
         companion object {

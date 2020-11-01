@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<img src="/previews/main_usage.gif"/>
+<img src="/previews/main_usage.gif" />
 </p>
 
 ## Tech stack - Library
@@ -36,7 +36,7 @@ Used The Odds API. [Link](https://the-odds-api.com/liveapi/guides/v3/)
 - [ ] Betting Feature
 - [ ] Polishing UI with Material Designs
 - [ ] Use WorkManager to sync data to DB asynchronously 
-- [ ] Use View Binding instead of Kotlyn synthetics
+- [ ] Use View Binding instead of Kotlin synthetics
 
 ## License
 The Apache License 2.0 - see [`LICENSE`](LICENSE) for more details
