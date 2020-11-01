@@ -30,5 +30,9 @@
     <string name="search_event">Search events</string>
     <string name="place_bet">Place Bet</string>
     <string name="bet_amount">Bet amount</string>
+    <string name="football_icon">Football image</string>
+    <string name="no_results">NO RESULTS FOUND</string>
+
+    <string name="event_details">%1$s vs %2$s</string>
 
 </resources>

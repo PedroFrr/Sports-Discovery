@@ -13,7 +13,9 @@
 
         <action
             android:id="@+id/action_listToDetail"
-            app:destination="@id/EventListFragment" />
+            app:destination="@id/EventListFragment"
+            app:popUpTo="@id/EventListFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/EventListFragment"

@@ -1,8 +1,6 @@
 package com.pedrofr.sportsfinder.data.repository
 
-import com.pedrofr.sportsfinder.data.model.Bet
-import com.pedrofr.sportsfinder.data.model.Sport
-import com.pedrofr.sportsfinder.data.model.User
+import com.pedrofr.sportsfinder.data.model.*
 import com.pedrofr.sportsfinder.networking.Result
 import kotlinx.coroutines.flow.Flow
 
@@ -20,7 +18,9 @@ interface SportRepository {
 
     suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>>
 
-    fun fetchPendingBets(userId: String): Flow<List<Bet>>
+    fun fetchPendingBets(userId: String): Flow<List<BetWithEvents>>
 
     suspend fun createPendingBet(bet: Bet)
+
+    suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef)
 }

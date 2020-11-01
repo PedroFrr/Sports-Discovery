@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Bet
+import com.pedrofr.sportsfinder.data.model.BetWithEvents
 import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading
@@ -39,7 +40,7 @@ class EventListFragment : Fragment() {
 
         initUi()
         updateData()
-        loadEventsList()
+        initObservables()
 
     }
 
@@ -56,6 +57,11 @@ class EventListFragment : Fragment() {
             val sportsKey = args.sportsKey
             viewModel.fetchEvents(sportsKey)
         }
+    }
+
+    private fun initObservables(){
+        loadEventsList()
+        initCanSaveLiveData()
     }
 
     private fun loadEventsList() {
@@ -87,6 +93,12 @@ class EventListFragment : Fragment() {
         })
     }
 
+    private fun initCanSaveLiveData(){
+        viewModel.result.observe(viewLifecycleOwner, { saved ->
+
+        })
+    }
+
     private fun createAlphabetizedOdds(events: List<Event>): MutableList<DataItem> {
 
         val eventsWithHeaders = mutableListOf<DataItem>()
@@ -109,7 +121,8 @@ class EventListFragment : Fragment() {
     private fun onClickListener(v: View, event: Event){
         when (v.id) {
             R.id.homeTeamOddBtn -> {
-                viewModel.setPendingBet(event.homeTeamOdd)
+                val eventId = event.eventId
+                viewModel.setPendingBet(selectedTeam = event.homeTeam, selectedOdd =  event.homeTeamOdd, eventId = eventId)
             }
             R.id.awayTeamOddBtn -> {
                 Toast.makeText(activity, "AwayTeam Selected", Toast.LENGTH_SHORT).show()

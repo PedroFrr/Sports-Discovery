@@ -19,6 +19,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_book_black_24dp"
+        android:backgroundTint="@color/white"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <include layout="@layout/layout_bottom_sheet" />

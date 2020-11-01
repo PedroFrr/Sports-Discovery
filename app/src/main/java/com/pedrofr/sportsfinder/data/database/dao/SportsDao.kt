@@ -93,4 +93,16 @@ interface SportsDao {
     @Query("SELECT * FROM Bet WHERE isPending = 1 AND userCreatorId = :userId")
     fun getPendingBets(userId: String): Flow<List<Bet>>
 
+    /*
+    Returns the list of events associated with a Bet
+     */
+    @Transaction
+    @Query("SELECT * FROM Bet WHERE userCreatorId = :userId")
+    fun getBetsWithEvents(userId: String): Flow<List<BetWithEvents>>
+
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBetWithEvents(betWithEvents: BetWithEventCrossRef)
+
+
 }

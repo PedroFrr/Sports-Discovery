@@ -3,31 +3,21 @@ package com.pedrofr.sportsfinder.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pedrofr.sportsfinder.R
-import com.pedrofr.sportsfinder.data.model.Bet
-import com.pedrofr.sportsfinder.data.model.Event
-import com.pedrofr.sportsfinder.networking.Failure
-import com.pedrofr.sportsfinder.networking.Loading
-import com.pedrofr.sportsfinder.networking.Success
-import com.pedrofr.sportsfinder.ui.adapters.BaseItem
-import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
 import com.pedrofr.sportsfinder.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private val pendingBetsAdapter by lazy { PendingBetsAdapter() }
     private val viewModel: MainActivityViewModel by viewModel()
-    private val sharedPrefs by inject<SharedPrefManager> ()
-    private val userId = sharedPrefs.getLoggedInUserId()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +51,22 @@ class MainActivity : AppCompatActivity() {
     private fun initUi() {
 
         val bottomSheetBehavior = BottomSheetBehavior.from(layoutBottomSheet)
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
 
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+        })
 
         floatingActionButton.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-//                viewModel.fetchPendingBets(userId)
             } else {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
@@ -75,6 +75,10 @@ class MainActivity : AppCompatActivity() {
         pendingBetsRecyclerView.apply {
             adapter = pendingBetsAdapter
             hasFixedSize()
+        }
+
+        betButton.setOnClickListener {
+            //TODO logic to place bet
         }
 
 

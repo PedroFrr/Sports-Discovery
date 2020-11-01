@@ -8,7 +8,9 @@ import java.util.*
 data class Bet(
     @PrimaryKey val betId: String = UUID.randomUUID().toString(),
     val userCreatorId: String,
-    val wageredAmount: Double = 0.0,
+    val stake: Double = 0.0,
+    //TODO rethink the data model
+    val selectedTeam: String,
     val totalOdd: Double = 0.0,
     val isSettled: Boolean = false,
     val isPending: Boolean = true //If it's pending it shouldn't appear on the Betting History but only on the Bottom Sheet
