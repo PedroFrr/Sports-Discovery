@@ -4,7 +4,9 @@
  Sports Betting Simulation, Koin, Coroutines, Flow, Jetpack (Room, ViewModel,Navigation LiveData) based on MVVM architecture. Also fetching data from the network and integrating local data in the database via repository pattern.
 </p>
 
-
+<p align="center">
+<img src="/previews/main_usage.gif"/>
+</p>
 
 ## Tech stack - Library
 - [Kotlin](https://kotlinlang.org/) , [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) , [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/)

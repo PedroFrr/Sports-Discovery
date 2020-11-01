@@ -46,7 +46,7 @@ class EventsListViewModel(private val repository: SportRepository, private val s
     fun setPendingBet(eventId: String, selectedOdd: Double, selectedTeam: String){
         viewModelScope.launch(Dispatchers.IO) {
             val betId = UUID.randomUUID().toString()
-            val bet = Bet(betId = betId, userCreatorId = userId, totalOdd = selectedOdd, selectedTeam = selectedTeam)
+            val bet = Bet(betId = betId, userCreatorId = userId, selectedTeam = selectedTeam, totalOdd = selectedOdd)
             repository.createPendingBet(bet)
             val betWithEventCrossRef = BetWithEventCrossRef(betId = betId, eventId = eventId)
             repository.createBetWithEvent(betWithEventCrossRef)
