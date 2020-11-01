@@ -34,5 +34,7 @@
     <string name="no_results">NO RESULTS FOUND</string>
 
     <string name="event_details">%1$s vs %2$s</string>
+    <string name="stake">Stake</string>
+    <string name="total">Total</string>
 
 </resources>
