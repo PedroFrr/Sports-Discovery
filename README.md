@@ -34,9 +34,10 @@ Used The Odds API. [Link](https://the-odds-api.com/liveapi/guides/v3/)
 
 ## Roadmap
 - [ ] Betting Feature
-- [ ] Polishing UI with Material Designs
+- [ ] Polish UI with Material Designs
 - [ ] Use WorkManager to sync data to DB asynchronously 
 - [ ] Use View Binding instead of Kotlin synthetics
+- [ ] Unit testing with JUnit and Mockito
 
 ## License
 The Apache License 2.0 - see [`LICENSE`](LICENSE) for more details
