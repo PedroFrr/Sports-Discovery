@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="6dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginRight="6dp"
+    android:background="@color/colorWhiteCard"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/colorWhiteCard"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foreground="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/iv_album"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/football_icon"
+            android:padding="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_sharp_sports_soccer_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.1" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toRightOf="@id/iv_album"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:maxLines="1"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/historyEventDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:elevation="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="start"
+                    android:maxLines="1"
+                    android:padding="@dimen/padding_half"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Real Madrid vs Shaktar" />
+
+                <ImageView
+                    android:id="@+id/markAsWonBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_check_circle_24"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/padding_half"
+                    android:contentDescription="@string/mark_won"/>
+
+                <ImageView
+                    android:id="@+id/markAsLostBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_remove_circle_24"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/mark_lost"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/historySelectedTeamName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:elevation="4dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:gravity="start"
+                    android:maxLines="1"
+                    android:padding="@dimen/padding_half"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Bulbasaur" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/stakeAndOdd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:paddingRight="@dimen/padding_half"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="100 x 1.83" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

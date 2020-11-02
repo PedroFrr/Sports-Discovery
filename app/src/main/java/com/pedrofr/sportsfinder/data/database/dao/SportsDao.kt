@@ -80,7 +80,13 @@ interface SportsDao {
     Updates the user balance
      */
     @Query("UPDATE User SET balance = :newBalance WHERE userId = :userId")
-    fun updateUserBalance(userId: String, newBalance: Long)
+    suspend fun updateUserBalance(userId: String, newBalance: Double)
+
+    /*
+    Retrives User Balance
+     */
+    @Query("SELECT balance FROM User WHERE userId = :userId")
+    fun getUserBalance(userId: String): Double
 
     /*
     Creates a new bet record
@@ -89,10 +95,10 @@ interface SportsDao {
     suspend fun insertBet(bet: Bet)
 
     /*
-    Retrieve user temporary bets
+    Retrieves non pending Bets
      */
-    @Query("SELECT * FROM Bet WHERE isPending = 1 AND userCreatorId = :userId")
-    fun getPendingBets(userId: String): Flow<List<Bet>>
+    @Query("SELECT * FROM Bet WHERE isPending = 0 AND userCreatorId = :userId")
+    fun getNonPendingBets(userId: String): List<BetWithEvents>
 
     /*
     Returns the list of events associated with a Bet
@@ -110,8 +116,8 @@ interface SportsDao {
     /*
     Updates pending bet to a none pending
      */
-    @Query("UPDATE Bet SET isPending = 0 WHERE userCreatorId = :userId AND betId IN  (:betIds)")
-    suspend fun updateUserPendingBets(userId: String, betIds: List<String>)
+    @Query("UPDATE Bet SET isPending = 0, stake = :newStake WHERE userCreatorId = :userId AND betId = :betId")
+    suspend fun updateUserPendingBet(userId: String, betId: String, newStake: Double)
 
     @Delete
     suspend fun deleteBet(bet: Bet)

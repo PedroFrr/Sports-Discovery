@@ -25,7 +25,6 @@ class EventsListViewModel(private val repository: SportRepository, private val s
 
     val result = MutableLiveData<Result<Any>>()
     private val userId = sharedPrefs.getLoggedInUserId()
-    private val _saveLiveData = MutableLiveData<Boolean>()
 
     fun fetchEvents(sportKey: String){
         searchJob?.cancel()

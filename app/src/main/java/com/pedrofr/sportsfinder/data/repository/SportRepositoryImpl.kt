@@ -141,9 +141,23 @@ class SportRepositoryImpl(
 
     override suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef) = sportsDao.insertBetWithEvents(betWithEvents)
 
-    override suspend fun updatePendingBet(userId: String, betIds: List<String>) = sportsDao.updateUserPendingBets(userId, betIds)
+    override suspend fun updatePendingBet(userId: String, betId: String, newStake: Double) = sportsDao.updateUserPendingBet(userId, betId, newStake)
 
     override suspend fun deleteBet(bet: Bet) = sportsDao.deleteBet(bet)
+
+    override suspend fun updateUserBalance(userId: String, newBalance: Double) = sportsDao.updateUserBalance(userId, newBalance)
+
+    override fun getUserBalance(userId: String): Double = sportsDao.getUserBalance(userId)
+
+    override suspend fun getNonPendingBets(userId: String): Flow<Result<List<*>>> {
+        return flow {
+            emit(Loading)
+            emit(Success(sportsDao.getNonPendingBets(userId)))
+
+        }.flowOn(Dispatchers.IO)
+
+    }
+
 
 
 }

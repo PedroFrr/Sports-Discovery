@@ -28,7 +28,16 @@ class MainActivityViewModel(private val repository: SportRepository) : ViewModel
     fun saveBet(bets: List<Bet>) {
         viewModelScope.launch(Dispatchers.IO) {
             val betIds = bets.map { it.betId }
-            repository.updatePendingBet(userId = userId, betIds = betIds)
+            val currentBalance = repository.getUserBalance(userId)
+            val betsTotalAmount = bets
+                .map { it.stake }
+                .sumByDouble { it }
+            val newBalance = currentBalance.minus(betsTotalAmount)
+            bets.forEach { bet ->
+                repository.updatePendingBet(userId = userId, betId = bet.betId, newStake = bet.stake)
+            }
+            //TODO add validation -> Total amount <= User Current Balance
+            repository.updateUserBalance(userId, newBalance)
             _saveLiveData.postValue(true)
         }
 

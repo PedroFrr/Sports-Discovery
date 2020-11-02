@@ -24,7 +24,13 @@ interface SportRepository {
 
     suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef)
 
-    suspend fun updatePendingBet(userId: String, betIds: List<String>)
+    suspend fun updatePendingBet(userId: String, betId: String, newStake: Double)
 
     suspend fun deleteBet(bet: Bet)
+
+    suspend fun updateUserBalance(userId: String, newBalance: Double)
+
+    fun getUserBalance(userId: String): Double
+
+    suspend fun getNonPendingBets(userId: String): Flow<Result<List<*>>>
 }

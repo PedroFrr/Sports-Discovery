@@ -27,6 +27,7 @@ class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit)  :
     }
 
     private fun afterStakeChanged(pendingBetId: String, changedStake: String){
+        //TODO element not geting returned sometimes
         val index = currentList.indexOfFirst { it.bet.betId == pendingBetId }
 
         currentList[index].bet.stake = changedStake.toDouble()
@@ -50,7 +51,7 @@ class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit)  :
             val totalOdd = pendingBet.bet.totalOdd
             with(itemView) {
                 //TODO Change this values when the data model is finished
-                eventDetails.text = itemView.context.getString(R.string.event_details, pendingBet.events.first().homeTeam, pendingBet.events.first().awayTeam) //TODO this is done wrong. With the correct data model we should be able to associate the event with the Selected team and odd
+                eventDetails.text = context.getString(R.string.event_details, pendingBet.events.first().homeTeam, pendingBet.events.first().awayTeam) //TODO this is done wrong. With the correct data model we should be able to associate the event with the Selected team and odd
                 selectedTeamName.text = pendingBet.bet.selectedTeam
                 selectedOdd.text = totalOdd.toString()
 

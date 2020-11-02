@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pedrofr.sportsfinder.R
@@ -15,6 +16,7 @@ import com.pedrofr.sportsfinder.utils.toast
 import com.pedrofr.sportsfinder.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -34,20 +36,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //Defines what to do on each menu option. For now only Login is defined
-        when (item.itemId) {
-            R.id.sports -> {
-                displayFragment(R.id.SportListFragment)
-            }
-
-            R.id.userAccount -> {
-                displayFragment(R.id.userAccountFragment)
-            }
-        }
         return true
     }
 
@@ -84,19 +72,32 @@ class MainActivity : AppCompatActivity() {
             onBetButtonClick()
         }
 
+        bottomAppBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.sports -> {
+                    displayFragment(R.id.SportListFragment)
+                    true
+                }
 
-
+                R.id.userAccount -> {
+                    displayFragment(R.id.userAccountFragment)
+                    true
+                }
+                else -> false
+            }
+        }
     }
-
 
     private fun displayFragment(destinationFragment: Int) {
         findNavController(R.id.nav_host_fragment).navigate(destinationFragment)
     }
 
     private fun initObservables() {
-        viewModel.result.observe(this, {
-            pendingBetsAdapter.submitList(it)
-        })
+        lifecycleScope.launch {
+            viewModel.result.observe(this@MainActivity, {
+                    pendingBetsAdapter.submitList(it)
+            })
+        }
 
         viewModel.getSaveLiveData().observe(this, {
             toast("Bets done!")

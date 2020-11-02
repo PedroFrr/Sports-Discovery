@@ -37,5 +37,9 @@
     <string name="stake">Stake</string>
     <string name="total">Total</string>
     <string name="remove_pending_bet">Remove Pending Bet</string>
+    <string name="page_title">Sports Discovery</string>
+    <string name="mark_won">Mark Bet as won</string>
+    <string name="mark_lost">Mark Bet as lost</string>
+    <string name="stake_odd">%1$s x %2$s</string>
 
 </resources>

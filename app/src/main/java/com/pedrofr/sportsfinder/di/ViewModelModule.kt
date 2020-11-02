@@ -14,4 +14,6 @@ val viewModelModule = module {
     viewModel { UserViewModel(get(), get()) }
 
     viewModel { MainActivityViewModel(get()) }
+
+    viewModel { EventHistoryViewModel(get()) }
 }
