@@ -8,7 +8,7 @@ import java.util.*
 data class Bet(
     @PrimaryKey val betId: String = UUID.randomUUID().toString(),
     val userCreatorId: String,
-    val stake: Double = 0.0,
+    var stake: Double = 0.0,
     //TODO rethink the data model
     val selectedTeam: String,
     val totalOdd: Double = 0.0,

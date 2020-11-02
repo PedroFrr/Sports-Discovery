@@ -135,11 +135,16 @@ class SportRepositoryImpl(
         }
     }
 
-    override fun fetchPendingBets
-                (userId: String): Flow<List<BetWithEvents>> = sportsDao.getBetsWithEvents(userId)
+    override fun fetchPendingBets(userId: String): Flow<List<BetWithEvents>> = sportsDao.getPendingBetsUntilChanged(userId)
 
     override suspend fun createPendingBet(bet: Bet)  = sportsDao.insertBet(bet)
 
     override suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef) = sportsDao.insertBetWithEvents(betWithEvents)
+
+    override suspend fun updatePendingBet(userId: String, betIds: List<String>) = sportsDao.updateUserPendingBets(userId, betIds)
+
+    override suspend fun deleteBet(bet: Bet) = sportsDao.deleteBet(bet)
+
+
 }
 

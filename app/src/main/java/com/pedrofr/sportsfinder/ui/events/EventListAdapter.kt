@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Event
-import com.pedrofr.sportsfinder.databinding.ListItemEventBinding
-import kotlinx.android.synthetic.main.list_item_event_header.view.*
-import kotlinx.android.synthetic.main.list_item_event.view.*
+import com.pedrofr.sportsfinder.databinding.ItemEventBinding
+import kotlinx.android.synthetic.main.item_event_header.view.*
+import kotlinx.android.synthetic.main.item_event.view.*
 
 private const val ITEM_VIEW_TYPE_HEADER = 0
 private const val ITEM_VIEW_TYPE_ITEM = 1
@@ -40,7 +40,7 @@ class EventListAdapter(private val onClickListener: (v: View, item: Event ) -> U
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_VIEW_TYPE_HEADER -> TextViewHolder.from(parent)
-            ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent, onClickListener)
+            ITEM_VIEW_TYPE_ITEM -> ViewHolder.from(parent)
             else -> throw ClassCastException("Unknown viewType ${viewType}")
         }
     }
@@ -54,14 +54,14 @@ class EventListAdapter(private val onClickListener: (v: View, item: Event ) -> U
         companion object {
             fun from(parent: ViewGroup): TextViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.list_item_event_header, parent, false)
+                val view = layoutInflater.inflate(R.layout.item_event_header, parent, false)
                 return TextViewHolder(view)
             }
 
         }
     }
 
-    class ViewHolder private constructor(private val binding: ListItemEventBinding) : RecyclerView.ViewHolder(binding.root){
+    class ViewHolder private constructor(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Event, onClickListener: (v: View, item: Event ) -> Unit) {
             binding.event = item
@@ -80,9 +80,9 @@ class EventListAdapter(private val onClickListener: (v: View, item: Event ) -> U
         }
 
         companion object {
-            fun from(parent: ViewGroup, onClickListener: (v: View, event: Event) -> Unit): ViewHolder {
+            fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemEventBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemEventBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }

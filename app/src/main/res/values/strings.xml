@@ -36,5 +36,6 @@
     <string name="event_details">%1$s vs %2$s</string>
     <string name="stake">Stake</string>
     <string name="total">Total</string>
+    <string name="remove_pending_bet">Remove Pending Bet</string>
 
 </resources>

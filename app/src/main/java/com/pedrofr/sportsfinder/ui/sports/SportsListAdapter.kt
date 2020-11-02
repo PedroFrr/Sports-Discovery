@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.pedrofr.sportsfinder.data.model.Sport
-import com.pedrofr.sportsfinder.databinding.ListItemSportBinding
+import com.pedrofr.sportsfinder.databinding.ItemSportBinding
 
 class SportsListAdapter(): ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return SportViewHolder(
-            ListItemSportBinding.inflate(
+            ItemSportBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -28,7 +28,7 @@ class SportsListAdapter(): ListAdapter<Sport, RecyclerView.ViewHolder>(SportDiff
     }
 
     class SportViewHolder(
-        private val binding: ListItemSportBinding
+        private val binding: ItemSportBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener {

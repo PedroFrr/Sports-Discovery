@@ -4,6 +4,7 @@ import androidx.room.*
 import com.pedrofr.sportsfinder.data.model.*
 import com.pedrofr.sportsfinder.networking.Result
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Dao
 interface SportsDao {
@@ -97,12 +98,23 @@ interface SportsDao {
     Returns the list of events associated with a Bet
      */
     @Transaction
-    @Query("SELECT * FROM Bet WHERE userCreatorId = :userId")
-    fun getBetsWithEvents(userId: String): Flow<List<BetWithEvents>>
+    @Query("SELECT * FROM Bet WHERE userCreatorId = :userId AND isPending = 1")
+    fun getPendingBetsWithEvents(userId: String): Flow<List<BetWithEvents>>
+
+    fun getPendingBetsUntilChanged(userId: String) = getPendingBetsWithEvents(userId).distinctUntilChanged()
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertBetWithEvents(betWithEvents: BetWithEventCrossRef)
+
+    /*
+    Updates pending bet to a none pending
+     */
+    @Query("UPDATE Bet SET isPending = 0 WHERE userCreatorId = :userId AND betId IN  (:betIds)")
+    suspend fun updateUserPendingBets(userId: String, betIds: List<String>)
+
+    @Delete
+    suspend fun deleteBet(bet: Bet)
 
 
 }

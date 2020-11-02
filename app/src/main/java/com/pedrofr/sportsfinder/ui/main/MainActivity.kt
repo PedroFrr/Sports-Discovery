@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pedrofr.sportsfinder.R
+import com.pedrofr.sportsfinder.data.model.Bet
+import com.pedrofr.sportsfinder.utils.toast
 import com.pedrofr.sportsfinder.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
@@ -17,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val pendingBetsAdapter by lazy { PendingBetsAdapter() }
+    private val pendingBetsAdapter by lazy { PendingBetsAdapter(::onItemRemove) }
     private val viewModel: MainActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         betButton.setOnClickListener {
-            //TODO logic to place bet
+            onBetButtonClick()
         }
 
 
@@ -92,9 +94,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservables() {
-        viewModel.result.observe(this, Observer {
+        viewModel.result.observe(this, {
             pendingBetsAdapter.submitList(it)
         })
+
+        viewModel.getSaveLiveData().observe(this, {
+            toast("Bets done!")
+        })
+    }
+
+    private fun onBetButtonClick(){
+        val bets = pendingBetsAdapter.getPendingBetsWithStake()
+        viewModel.saveBet(bets)
+
+    }
+
+    private fun onItemRemove(pendingBet: Bet){
+        viewModel.removePendingBet(pendingBet)
     }
 
 }
