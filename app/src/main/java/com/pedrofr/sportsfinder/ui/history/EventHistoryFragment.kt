@@ -69,22 +69,18 @@ class EventHistoryFragment : Fragment() {
             if (saved) {
                 activity?.toast("Bet settled")
             } else {
-                activity?.toast("An error as occurred")
+                activity?.toast("The event hasn't been played yet")
             }
         })
     }
 
-    private fun onClickListener(v: View, bet: Bet) {
-        nonSettledLayout.gone()
-        settledLayout.visible()
+    private fun onClickListener(v: View, betWithEvents: BetWithEvents) {
         when (v.id) {
             R.id.markAsWonBtn -> {
-                wonBetIcon.visible()
-                viewModel.settleBet(bet, true)
+                viewModel.settleBet(betWithEvents, true)
             }
             R.id.markAsLostBtn -> {
-                lostBetIcon.visible()
-                viewModel.settleBet(bet, false)
+                viewModel.settleBet(betWithEvents, false)
             }
 
         }

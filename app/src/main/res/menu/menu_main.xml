@@ -6,11 +6,17 @@
     android:id="@+id/sports"
     android:icon="@drawable/ic_sharp_sports_soccer_24"
     android:title="@string/sports_title"
-    app:showAsAction="always" />
+    app:showAsAction="ifRoom" />
 
   <item
     android:id="@+id/userAccount"
     android:icon="@drawable/ic_baseline_account_box_24"
     android:title="@string/user_account"
-    app:showAsAction="always" />
+    app:showAsAction="ifRoom" />
+
+  <item
+      android:id="@+id/logout"
+      android:icon="@drawable/ic_baseline_power_settings_new_24"
+      android:title="@string/user_account"
+      app:showAsAction="ifRoom" />
 </menu>

@@ -14,7 +14,7 @@ import com.pedrofr.sportsfinder.utils.afterTextChangedDelayed
 import kotlinx.android.synthetic.main.item_pending_bet.view.*
 
 
-class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit)  :
+class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit) :
     ListAdapter<BetWithEvents, PendingBetsAdapter.ViewHolder>(PendingBetDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,17 +26,17 @@ class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit)  :
         holder.showData(getItem(position), ::afterStakeChanged, onItemRemove)
     }
 
-    private fun afterStakeChanged(pendingBetId: String, changedStake: String){
+    private fun afterStakeChanged(pendingBetId: String, changedStake: Double) {
         //TODO verify why the Id is not found sometimes. Is it because it didn't submit yet?
         val index = currentList.indexOfFirst { it.bet.betId == pendingBetId }
 
-        if(index != -1 ) currentList[index].bet.stake = changedStake.toDouble()
+        if (index != -1) currentList[index].bet.stake = changedStake
     }
 
     fun getPendingBetsWithStake(): List<Bet> {
         val bets = mutableListOf<Bet>()
         currentList.forEach {
-            if(it.bet.stake != 0.0) bets.add(it.bet)
+            if (it.bet.stake != 0.0) bets.add(it.bet)
         }
         return bets
     }
@@ -45,29 +45,33 @@ class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit)  :
 
         fun showData(
             pendingBet: BetWithEvents,
-            afterStakeChanged: (String, String) -> Unit,
-            onItemRemove: (Bet) -> Unit) {
+            afterStakeChanged: (String, Double) -> Unit,
+            onItemRemove: (Bet) -> Unit
+        ) {
             val totalOdd = pendingBet.bet.totalOdd
             with(itemView) {
                 //TODO Change this values when the data model is finished
-                eventDetails.text = context.getString(R.string.event_details, pendingBet.events.first().homeTeam, pendingBet.events.first().awayTeam) //TODO this is done wrong. With the correct data model we should be able to associate the event with the Selected team and odd
+                eventDetails.text = context.getString(
+                    R.string.event_details,
+                    pendingBet.events.first().homeTeam,
+                    pendingBet.events.first().awayTeam
+                ) //TODO this is done wrong. With the correct data model we should be able to associate the event with the Selected team and odd
                 selectedTeamName.text = pendingBet.bet.selectedTeam
                 selectedOdd.text = totalOdd.toString()
 
                 stake_edit_text.afterTextChangedDelayed {
-                    if(it.isNotBlank()){
-                        val amount = it.toDouble()
-                        val total = amount.times(totalOdd)
-                        total_edit_text.setText(String.format("%.2f", total)) //Rounds the number of decimal field to 2
-                        afterStakeChanged(pendingBet.bet.betId, it)
-                    }
+                    val amount = if(it.isBlank()) 0.0 else it.toDouble()
+                    val total = amount.times(totalOdd)
+                    total_edit_text.setText(String.format("%.2f", total)
+                    ) //Rounds the number of decimal field to 2
+                    afterStakeChanged(pendingBet.bet.betId, total)
                 }
 
                 removePendingBetBtn.setOnClickListener {
+                    stake_edit_text.setText("")
                     onItemRemove(pendingBet.bet)
                 }
             }
-
 
 
         }

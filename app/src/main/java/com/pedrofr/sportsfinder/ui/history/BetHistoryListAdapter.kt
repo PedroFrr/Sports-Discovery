@@ -16,7 +16,7 @@ import com.pedrofr.sportsfinder.utils.visible
 import kotlinx.android.synthetic.main.item_history_bet.view.*
 
 
-class BetHistoryListAdapter(private val onClickListener: (view: View, bet: Bet) -> Unit)  :
+class BetHistoryListAdapter(private val onClickListener: (view: View, betWithEvents: BetWithEvents) -> Unit)  :
     ListAdapter<BetWithEvents, BetHistoryListAdapter.ViewHolder>(BetWithEventsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,7 +30,7 @@ class BetHistoryListAdapter(private val onClickListener: (view: View, bet: Bet) 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun showData(betWithEvents: BetWithEvents, onClickListener: (view: View, bet: Bet) -> Unit) {
+        fun showData(betWithEvents: BetWithEvents, onClickListener: (view: View, betWithEvents: BetWithEvents) -> Unit) {
             with(itemView) {
                 //TODO Change this values when the data model is finished
                 historyEventDetails.text = context.getString(R.string.event_details, betWithEvents.events.first().homeTeam, betWithEvents.events.first().awayTeam) //TODO this is done wrong. With the correct data model we should be able to associate the event with the Selected team and odd
@@ -51,11 +51,11 @@ class BetHistoryListAdapter(private val onClickListener: (view: View, bet: Bet) 
 
                 markAsWonBtn.setOnClickListener {
 
-                    onClickListener(it, betWithEvents.bet)
+                    onClickListener(it, betWithEvents)
                 }
 
                 markAsLostBtn.setOnClickListener {
-                    onClickListener(it, betWithEvents.bet)
+                    onClickListener(it, betWithEvents)
                 }
             }
         }

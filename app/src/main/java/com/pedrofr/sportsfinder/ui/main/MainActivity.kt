@@ -1,5 +1,6 @@
 package com.pedrofr.sportsfinder.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Bet
+import com.pedrofr.sportsfinder.ui.login.LoginActivity
 import com.pedrofr.sportsfinder.utils.toast
 import com.pedrofr.sportsfinder.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -83,13 +85,13 @@ class MainActivity : AppCompatActivity() {
                     displayFragment(R.id.userAccountFragment)
                     true
                 }
+                R.id.logout -> {
+                    logout()
+                    true
+                }
                 else -> false
             }
         }
-    }
-
-    private fun displayFragment(destinationFragment: Int) {
-        findNavController(R.id.nav_host_fragment).navigate(destinationFragment)
     }
 
     private fun initObservables() {
@@ -99,8 +101,13 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        viewModel.getSaveLiveData().observe(this, {
-            toast("Bets done!")
+        viewModel.getSaveLiveData().observe(this, {saved ->
+            if(saved){
+                toast(getString(R.string.bets_submit_success))
+            }else{
+                toast(getString(R.string.bets_submit_failure))
+            }
+
         })
     }
 
@@ -113,5 +120,17 @@ class MainActivity : AppCompatActivity() {
     private fun onItemRemove(pendingBet: Bet){
         viewModel.removePendingBet(pendingBet)
     }
+
+    private fun logout(){
+        viewModel.logout()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun displayFragment(destinationFragment: Int) {
+        findNavController(R.id.nav_host_fragment).navigate(destinationFragment)
+    }
+
 
 }
