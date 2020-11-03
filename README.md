@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<img src="/previews/main_usage.gif" />
+<img src="/previews/main_usage_new.gif" />
 </p>
 
 ## Tech stack - Library
