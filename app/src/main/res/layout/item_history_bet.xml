@@ -8,6 +8,7 @@
     android:layout_marginLeft="6dp"
     android:layout_marginTop="6dp"
     android:layout_marginRight="6dp"
+    android:layout_marginBottom="@dimen/card_bottom_margin"
     android:background="@color/colorWhiteCard"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/colorWhiteCard"

@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.ui.main.MainActivity
+import com.pedrofr.sportsfinder.utils.toast
 import com.pedrofr.sportsfinder.viewmodels.LoginViewModel
 import com.pedrofr.sportsfinder.viewmodels.LoginViewState
 import kotlinx.android.synthetic.main.activity_login.*
@@ -49,11 +50,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun displayErrorMessage() {
-        Toast.makeText(
-            this,
-            getString(R.string.invalid_credentials),
-            Toast.LENGTH_SHORT
-        ).show()
+        toast(getString(R.string.invalid_credentials))
     }
 
     private fun navigateToMainScreen() {

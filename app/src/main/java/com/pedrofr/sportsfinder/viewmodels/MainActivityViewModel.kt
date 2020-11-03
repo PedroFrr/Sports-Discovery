@@ -27,18 +27,22 @@ class MainActivityViewModel(private val repository: SportRepository) : ViewModel
 
     fun saveBet(bets: List<Bet>) {
         viewModelScope.launch(Dispatchers.IO) {
-            val betIds = bets.map { it.betId }
-            val currentBalance = repository.getUserBalance(userId)
-            val betsTotalAmount = bets
-                .map { it.stake }
-                .sumByDouble { it }
-            val newBalance = currentBalance.minus(betsTotalAmount)
-            bets.forEach { bet ->
-                repository.updatePendingBet(userId = userId, betId = bet.betId, newStake = bet.stake)
+            if(canSaveBet(bets)){
+                val currentBalance = repository.getUserBalance(userId)
+                val betsTotalAmount = bets
+                    .map { it.stake }
+                    .sumByDouble { it }
+                val newBalance = currentBalance.minus(betsTotalAmount)
+                bets.forEach { bet ->
+                    repository.updatePendingBet(userId = userId, betId = bet.betId, newStake = bet.stake)
+                }
+                //TODO add validation -> Total amount <= User Current Balance
+                repository.updateUserBalance(userId, newBalance)
+                _saveLiveData.postValue(true)
+            }else{
+                _saveLiveData.postValue(false)
             }
-            //TODO add validation -> Total amount <= User Current Balance
-            repository.updateUserBalance(userId, newBalance)
-            _saveLiveData.postValue(true)
+
         }
 
     }
@@ -47,5 +51,15 @@ class MainActivityViewModel(private val repository: SportRepository) : ViewModel
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteBet(pendingBet)
         }
+    }
+
+    fun logout(){
+        sharedPrefs.clearLoggedInUserId()
+    }
+
+    private fun canSaveBet(bets:List<Bet>): Boolean{
+        //Validates if user has enough balance to make bets
+        val currentBalance = repository.getUserBalance(userId)
+        return bets.sumByDouble { it.stake } <= currentBalance
     }
 }
