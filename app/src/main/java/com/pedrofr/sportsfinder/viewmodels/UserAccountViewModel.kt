@@ -7,7 +7,7 @@ import com.pedrofr.sportsfinder.data.model.User
 import com.pedrofr.sportsfinder.data.repository.SportRepository
 import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
 
-class UserViewModel(
+class UserAccountViewModel(
     private val repository: SportRepository,
     private val sharedPrefs: SharedPrefManager) : ViewModel(){
 

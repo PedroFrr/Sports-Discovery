@@ -4,27 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.pedrofr.sportsfinder.R
+import com.pedrofr.sportsfinder.data.model.Bet
 import com.pedrofr.sportsfinder.data.model.BetWithEvents
-import com.pedrofr.sportsfinder.networking.Failure
-import com.pedrofr.sportsfinder.networking.Loading
-import com.pedrofr.sportsfinder.networking.Success
+import com.pedrofr.sportsfinder.utils.gone
 import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
+import com.pedrofr.sportsfinder.utils.toast
+import com.pedrofr.sportsfinder.utils.visible
 import com.pedrofr.sportsfinder.viewmodels.EventHistoryViewModel
 import kotlinx.android.synthetic.main.fragment_event_history.*
-import kotlinx.android.synthetic.main.fragment_events_list.*
+import kotlinx.android.synthetic.main.item_history_bet.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EventHistoryFragment : Fragment() {
 
-    private val eventsAdapter by lazy { BetHistoryListAdapter() }
+    private val eventsAdapter by lazy { BetHistoryListAdapter(::onClickListener) }
     private val sharedPrefs by inject<SharedPrefManager>()
     private val viewModel: EventHistoryViewModel by viewModel()
+    private val userId = sharedPrefs.getLoggedInUserId()
 
 
     override fun onCreateView(
@@ -39,7 +40,6 @@ class EventHistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initUi()
-        updateData()
         initObservables()
     }
 
@@ -50,41 +50,44 @@ class EventHistoryFragment : Fragment() {
         }
     }
 
-    private fun updateData() {
-        val userId = sharedPrefs.getLoggedInUserId()
-        viewModel.fetchBets(userId)
-    }
-
-    private fun initObservables(){
+    private fun initObservables() {
+        //Init Event History items observing
+        //TODO wrap in a result
         viewModel.result.observe(viewLifecycleOwner, { result ->
-            when (result) {
-                is Loading -> {
-                    eventsHistoryStatusBtn.visibility = View.GONE
-                    nonPendingBetsRecyclerView.visibility = View.GONE
-                    historyLoadingProgressBar.visibility = View.VISIBLE
-                }
-                is Success -> {
-                    eventsHistoryStatusBtn.visibility = View.GONE
-                    nonPendingBetsRecyclerView.visibility = View.VISIBLE
-                    historyLoadingProgressBar.visibility = View.GONE
-                    lifecycleScope.launch {
-                        val bets = (result as Success<List<BetWithEvents>>).data
-                        eventsAdapter.submitList(bets)
-                    }
+            eventsHistoryStatusBtn.visibility = View.GONE
+            nonPendingBetsRecyclerView.visibility = View.VISIBLE
+            historyLoadingProgressBar.visibility = View.GONE
+            lifecycleScope.launch {
+                val bets = (result as List<BetWithEvents>)
+                eventsAdapter.submitList(bets)
+            }
 
-                }
-                is Failure -> {
-                    eventsHistoryStatusBtn.visibility = View.VISIBLE
-                    context?.let {
-                        statusButton.setCompoundDrawables(
-                            null, ContextCompat.getDrawable(it, R.drawable.no_internet), null,
-                            null)
-                    }
-                    nonPendingBetsRecyclerView.visibility = View.GONE
-                    historyLoadingProgressBar.visibility = View.GONE
-                }
+        })
+
+        //Init settled Bet action
+        viewModel.getSaveLiveData().observe(viewLifecycleOwner, { saved ->
+            if (saved) {
+                activity?.toast("Bet settled")
+            } else {
+                activity?.toast("An error as occurred")
             }
         })
+    }
+
+    private fun onClickListener(v: View, bet: Bet) {
+        nonSettledLayout.gone()
+        settledLayout.visible()
+        when (v.id) {
+            R.id.markAsWonBtn -> {
+                wonBetIcon.visible()
+                viewModel.settleBet(bet, true)
+            }
+            R.id.markAsLostBtn -> {
+                lostBetIcon.visible()
+                viewModel.settleBet(bet, false)
+            }
+
+        }
     }
 
 }

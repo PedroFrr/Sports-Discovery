@@ -32,5 +32,7 @@ interface SportRepository {
 
     fun getUserBalance(userId: String): Double
 
-    suspend fun getNonPendingBets(userId: String): Flow<Result<List<*>>>
+    fun getNonPendingBets(userId: String): Flow<List<*>>
+
+    suspend fun settleBet(betId: String, isWon: Boolean)
 }

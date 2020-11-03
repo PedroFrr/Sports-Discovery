@@ -77,8 +77,7 @@ class SportRepositoryImpl(
 
     override suspend fun getUserDetail(userId: String): User? = sportsDao.getUserDetailById(userId)
 
-    override suspend fun getNumberOfUserBets(userId: String): Int =
-        sportsDao.getNumberOfUserBets(userId)
+    override suspend fun getNumberOfUserBets(userId: String): Int = sportsDao.getNumberOfUserBets(userId)
 
     override suspend fun createUser(user: User) = sportsDao.createNewUser(user)
 
@@ -149,15 +148,9 @@ class SportRepositoryImpl(
 
     override fun getUserBalance(userId: String): Double = sportsDao.getUserBalance(userId)
 
-    override suspend fun getNonPendingBets(userId: String): Flow<Result<List<*>>> {
-        return flow {
-            emit(Loading)
-            emit(Success(sportsDao.getNonPendingBets(userId)))
+    override fun getNonPendingBets(userId: String): Flow<List<*>> = sportsDao.getNonPendingBets(userId)
 
-        }.flowOn(Dispatchers.IO)
-
-    }
-
+    override suspend fun settleBet(betId: String, isWon: Boolean) = sportsDao.settleBet(betId, isWon)
 
 
 }
