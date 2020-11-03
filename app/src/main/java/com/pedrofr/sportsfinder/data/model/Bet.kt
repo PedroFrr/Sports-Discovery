@@ -13,5 +13,6 @@ data class Bet(
     val selectedTeam: String,
     val totalOdd: Double = 0.0,
     val isSettled: Boolean = false,
+    val isWon: Boolean = false,
     val isPending: Boolean = true //If it's pending it shouldn't appear on the Betting History but only on the Bottom Sheet
 )

@@ -11,7 +11,7 @@ val viewModelModule = module {
 
     viewModel { LoginViewModel(get(), get()) }
 
-    viewModel { UserViewModel(get(), get()) }
+    viewModel { UserAccountViewModel(get(), get()) }
 
     viewModel { MainActivityViewModel(get()) }
 

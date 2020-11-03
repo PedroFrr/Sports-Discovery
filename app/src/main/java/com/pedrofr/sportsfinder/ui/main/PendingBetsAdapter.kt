@@ -27,10 +27,10 @@ class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit)  :
     }
 
     private fun afterStakeChanged(pendingBetId: String, changedStake: String){
-        //TODO element not geting returned sometimes
+        //TODO verify why the Id is not found sometimes. Is it because it didn't submit yet?
         val index = currentList.indexOfFirst { it.bet.betId == pendingBetId }
 
-        currentList[index].bet.stake = changedStake.toDouble()
+        if(index != -1 ) currentList[index].bet.stake = changedStake.toDouble()
     }
 
     fun getPendingBetsWithStake(): List<Bet> {
@@ -40,7 +40,6 @@ class PendingBetsAdapter(private val onItemRemove: (Bet) -> Unit)  :
         }
         return bets
     }
-
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 

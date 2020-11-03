@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.utils.prefs.SharedPrefManager
-import com.pedrofr.sportsfinder.viewmodels.UserViewModel
+import com.pedrofr.sportsfinder.viewmodels.UserAccountViewModel
 import kotlinx.android.synthetic.main.fragment_user_account.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class UserAccountFragment() : Fragment() {
 
     private val sharedPrefs by inject<SharedPrefManager> ()
-    private val viewModel: UserViewModel by viewModel()
+    private val accountViewModel: UserAccountViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +38,14 @@ class UserAccountFragment() : Fragment() {
             navigateToListBets(view)
         }
 
-        viewModel.user.observe(viewLifecycleOwner) { user ->
+        accountViewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let{
-                userBalance.text = it.balance.toString()
+                userBalance.text = String.format("%.2f",it.balance)
             }
 
         }
 
-        viewModel.numberBets.observe(viewLifecycleOwner) { betsNumber ->
+        accountViewModel.numberBets.observe(viewLifecycleOwner) { betsNumber ->
             numberOfBets.text = betsNumber.toString()
         }
 

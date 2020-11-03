@@ -55,7 +55,7 @@ interface SportsDao {
     /*
     Returns number of bets for a given User
      */
-    @Query("SELECT COUNT(*) FROM Bet WHERE userCreatorId = :userId")
+    @Query("SELECT COUNT(*) FROM Bet WHERE userCreatorId = :userId AND isPending = 0")
     suspend fun getNumberOfUserBets(userId: String): Int
 
     /*
@@ -97,8 +97,8 @@ interface SportsDao {
     /*
     Retrieves non pending Bets
      */
-    @Query("SELECT * FROM Bet WHERE isPending = 0 AND userCreatorId = :userId")
-    fun getNonPendingBets(userId: String): List<BetWithEvents>
+    @Query("SELECT * FROM Bet WHERE isPending = 0 AND userCreatorId = :userId ")
+    fun getNonPendingBets(userId: String): Flow<List<BetWithEvents>>
 
     /*
     Returns the list of events associated with a Bet
@@ -121,6 +121,12 @@ interface SportsDao {
 
     @Delete
     suspend fun deleteBet(bet: Bet)
+
+    /*
+    Settles bet
+     */
+    @Query("UPDATE Bet SET isSettled = 1, isWon = :isWon WHERE betId = :betId")
+    fun settleBet(betId: String, isWon: Boolean)
 
 
 }

@@ -70,23 +70,58 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Real Madrid vs Shaktar" />
 
-                <ImageView
-                    android:id="@+id/markAsWonBtn"
+                <LinearLayout
+                    android:id="@+id/nonSettledLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/markAsWonBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/padding_half"
+                        android:contentDescription="@string/mark_won"
+                        android:src="@drawable/ic_baseline_check_circle_24" />
+
+                    <ImageView
+                        android:id="@+id/markAsLostBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/padding_half"
+                        android:contentDescription="@string/mark_lost"
+                        android:src="@drawable/ic_baseline_remove_circle_24" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/settledLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_check_circle_24"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/padding_half"
-                    android:contentDescription="@string/mark_won"/>
+                    android:visibility="gone">
 
-                <ImageView
-                    android:id="@+id/markAsLostBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_remove_circle_24"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/mark_lost"/>
+                    <ImageView
+                        android:id="@+id/wonBetIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/padding_half"
+                        android:contentDescription="@string/mark_won"
+                        android:src="@drawable/ic_baseline_check_green_circle_24"
+                        android:visibility="gone"/>
 
+                    <ImageView
+                        android:id="@+id/lostBetIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="@dimen/padding_half"
+                        android:contentDescription="@string/mark_lost"
+                        android:src="@drawable/ic_baseline_remove_red_circle_24"
+                        android:visibility="gone" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
