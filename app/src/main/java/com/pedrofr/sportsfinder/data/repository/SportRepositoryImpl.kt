@@ -77,7 +77,8 @@ class SportRepositoryImpl(
 
     override suspend fun getUserDetail(userId: String): User? = sportsDao.getUserDetailById(userId)
 
-    override suspend fun getNumberOfUserBets(userId: String): Int = sportsDao.getNumberOfUserBets(userId)
+    override suspend fun getNumberOfUserBets(userId: String): Int =
+        sportsDao.getNumberOfUserBets(userId)
 
     override suspend fun createUser(user: User) = sportsDao.createNewUser(user)
 
@@ -87,45 +88,42 @@ class SportRepositoryImpl(
     override suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>> {
         return flow {
             emit(Loading)
-            if (query.length < 2) {
-                emit(Success(getSports()))
+            val fetchResultsByQuery = sportsDao.fetchSportsByTitle(query)
+            if (fetchResultsByQuery.isEmpty()) {
+                emit(NoResults)
             } else {
-                val fetchResultsByQuery = sportsDao.fetchSportsByTitle(query)
-                if (fetchResultsByQuery.isEmpty()) {
-                    emit(NoResults)
-                } else {
-                    emit(Success(fetchResultsByQuery))
-                }
+                emit(Success(fetchResultsByQuery))
             }
         }.flowOn(Dispatchers.IO)
 
     }
 
-    private suspend fun getSports(): List<Sport> {
+    override suspend fun getSports(): Flow<Result<List<Sport>>> {
+        return flow {
+            networkStatusChecker.performIfConnectedToInternet {
+                emit(Loading)
+                //Retrieves API results if there's a Internet Connection
+                val results = sportsApi.loadSports()
+                if (results is Success) {
+                    results.data.let { sportsResponse ->
 
-        networkStatusChecker.performIfConnectedToInternet {
-            //Retrieves API results if there's a Internet Connection
-            val results = sportsApi.loadSports()
-            if (results is Success) {
-                results.data.let { sportsResponse ->
-
-                    if (getSportsDataFromCache().isEmpty()) {
-                        val sports = sportsResponse
-                            .filter { it.group.contains("soccer", true) }
-                            .map {
-                                //TODO replace with more attributes with time
-                                Sport(
-                                    sports_key = it.key,
-                                    title = it.title
-                                )
-                            }
-                        sportsDao.insertSports(sports)
+                        if (getSportsDataFromCache().isEmpty()) {
+                            val sports = sportsResponse
+                                .filter { it.group.contains("soccer", true) }
+                                .map {
+                                    //TODO replace with more attributes with time
+                                    Sport(
+                                        sports_key = it.key,
+                                        title = it.title
+                                    )
+                                }
+                            sportsDao.insertSports(sports)
+                        }
                     }
                 }
             }
-        }
-        return (sportsDao.getSports())
-
+            emit(Success(sportsDao.getSports()))
+        }.flowOn(Dispatchers.IO)
     }
 
     private suspend fun getSportsDataFromCache(): List<Sport> {
@@ -134,23 +132,29 @@ class SportRepositoryImpl(
         }
     }
 
-    override fun fetchPendingBets(userId: String): Flow<List<BetWithEvents>> = sportsDao.getPendingBetsUntilChanged(userId)
+    override fun fetchPendingBets(userId: String): Flow<List<BetWithEvents>> =
+        sportsDao.getPendingBetsUntilChanged(userId)
 
-    override suspend fun createPendingBet(bet: Bet)  = sportsDao.insertBet(bet)
+    override suspend fun createPendingBet(bet: Bet) = sportsDao.insertBet(bet)
 
-    override suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef) = sportsDao.insertBetWithEvents(betWithEvents)
+    override suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef) =
+        sportsDao.insertBetWithEvents(betWithEvents)
 
-    override suspend fun updatePendingBet(userId: String, betId: String, newStake: Double) = sportsDao.updateUserPendingBet(userId, betId, newStake)
+    override suspend fun updatePendingBet(userId: String, betId: String, newStake: Double) =
+        sportsDao.updateUserPendingBet(userId, betId, newStake)
 
     override suspend fun deleteBet(bet: Bet) = sportsDao.deleteBet(bet)
 
-    override suspend fun updateUserBalance(userId: String, newBalance: Double) = sportsDao.updateUserBalance(userId, newBalance)
+    override suspend fun updateUserBalance(userId: String, newBalance: Double) =
+        sportsDao.updateUserBalance(userId, newBalance)
 
     override fun getUserBalance(userId: String): Double = sportsDao.getUserBalance(userId)
 
-    override fun getNonPendingBets(userId: String): Flow<List<*>> = sportsDao.getNonPendingBets(userId)
+    override fun getNonPendingBets(userId: String): Flow<List<*>> =
+        sportsDao.getNonPendingBets(userId)
 
-    override suspend fun settleBet(betId: String, isWon: Boolean) = sportsDao.settleBet(betId, isWon)
+    override suspend fun settleBet(betId: String, isWon: Boolean) =
+        sportsDao.settleBet(betId, isWon)
 
 
 }

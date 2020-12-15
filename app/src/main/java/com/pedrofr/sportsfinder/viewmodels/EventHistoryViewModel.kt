@@ -46,7 +46,7 @@ class EventHistoryViewModel(private val repository: SportRepository) : ViewModel
 
     }
 
-    private fun canSettleBet(betWithEvents: BetWithEvents): Boolean{
+     fun canSettleBet(betWithEvents: BetWithEvents): Boolean{
         val twoHoursTime = TimeUnit.HOURS.toMillis(2)
         //TODO add unit test
         val currentTime = System.currentTimeMillis()

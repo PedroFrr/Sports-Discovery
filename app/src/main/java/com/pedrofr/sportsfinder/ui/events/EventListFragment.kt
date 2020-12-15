@@ -11,8 +11,9 @@ import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Event
 import com.pedrofr.sportsfinder.networking.Failure
 import com.pedrofr.sportsfinder.networking.Loading
+import com.pedrofr.sportsfinder.networking.NoResults
 import com.pedrofr.sportsfinder.networking.Success
-import com.pedrofr.sportsfinder.utils.convertToDayMonth
+import com.pedrofr.sportsfinder.utils.convertLongToDayMonthYear
 import com.pedrofr.sportsfinder.viewmodels.EventsListViewModel
 import kotlinx.android.synthetic.main.fragment_events_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -86,6 +87,7 @@ class EventListFragment : Fragment() {
                     eventsRecyclerView.visibility = View.GONE
                     loadingProgressBar.visibility = View.GONE
                 }
+                NoResults -> TODO()
             }
         })
     }
@@ -97,7 +99,7 @@ class EventListFragment : Fragment() {
         // Loop through the fruit list and add headers where we need them
         var currentHeader: String? = null
         events.forEach { eventItem ->
-            val startDate = convertToDayMonth(eventItem.startTime)
+            val startDate = convertLongToDayMonthYear(eventItem.startTime)
             startDate.let {startTime ->
                 if (startTime != currentHeader) {
                     eventsWithHeaders.add(DataItem.Header(startTime))

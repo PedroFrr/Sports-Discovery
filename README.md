@@ -33,7 +33,7 @@ Sports Discovery is based on MVVM architecture and a repository pattern.
 Used The Odds API. [Link](https://the-odds-api.com/liveapi/guides/v3/)
 
 ## Roadmap
-- [ ] Betting Feature
+- [x] Betting Feature
 - [ ] Polishing UI with Material Designs
 - [ ] Use WorkManager to sync data to DB asynchronously 
 - [ ] Use View Binding instead of Kotlin synthetics

@@ -60,12 +60,10 @@ class SportsListFragment : Fragment() {
             hasFixedSize()
         }
 
-        viewModel.fetchSportsByTitle("") //Retrieve all sports
     }
 
     private fun initObservables() {
         viewModel.result.observe(viewLifecycleOwner, { result ->
-            //TODO Handle Failure, loading....
             when (result) {
                 is Loading -> {
                     statusButton.visibility = View.GONE
@@ -78,7 +76,6 @@ class SportsListFragment : Fragment() {
                     loadingProgressBar.visibility = View.GONE
                     sportsListAdapter.submitList(((result) as Success<List<Sport>>).data)
                 }
-                //TODO Handle failure, for now only internet error is accounted
                 is Failure -> {
                     statusButton.visibility = View.VISIBLE
                     statusButton.text =  getString(R.string.no_internet)

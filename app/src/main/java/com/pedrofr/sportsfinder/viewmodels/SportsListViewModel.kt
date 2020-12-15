@@ -17,14 +17,25 @@ class SportsListViewModel(private val repository: SportRepository) : ViewModel()
 
     val result = MutableLiveData<Result<Any>>()
 
+    init {
+        viewModelScope.launch {
+            repository.getSports()
+                .collect {
+                    result.postValue(it)
+                }
+        }
+    }
+
     fun fetchSportsByTitle(query: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(debouncePeriod)
-            repository.fetchSportsByQuery(query)
-                .collect {
-                    result.postValue(it)
-                }
+            if (query.length < 2) {
+                repository.fetchSportsByQuery(query)
+                    .collect {
+                        result.postValue(it)
+                    }
+            }
         }
     }
 

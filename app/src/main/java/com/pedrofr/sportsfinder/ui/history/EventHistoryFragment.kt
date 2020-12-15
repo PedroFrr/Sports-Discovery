@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Bet
 import com.pedrofr.sportsfinder.data.model.BetWithEvents
@@ -68,6 +69,7 @@ class EventHistoryFragment : Fragment() {
         viewModel.getSaveLiveData().observe(viewLifecycleOwner, { saved ->
             if (saved) {
                 activity?.toast("Bet settled")
+                
             } else {
                 activity?.toast("The event hasn't been played yet")
             }
