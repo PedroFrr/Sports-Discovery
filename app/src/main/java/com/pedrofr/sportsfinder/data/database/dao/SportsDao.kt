@@ -25,7 +25,7 @@ interface SportsDao {
     Returns the list of events for the specified Sport. Ordered by ASC date
      */
     @Query("SELECT * FROM Event WHERE sportsKey = :sportsId ORDER BY startTime")
-    fun getEvents(sportsId: String): List<Event>
+    suspend fun getEvents(sportsId: String): List<Event>
 
     /*
     Returns the last event (last meaning last date)

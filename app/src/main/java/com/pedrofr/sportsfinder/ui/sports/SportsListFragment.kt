@@ -1,14 +1,12 @@
 package com.pedrofr.sportsfinder.ui.sports
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import com.pedrofr.sportsfinder.R
 import com.pedrofr.sportsfinder.data.model.Sport
 import com.pedrofr.sportsfinder.networking.Failure
@@ -16,7 +14,6 @@ import com.pedrofr.sportsfinder.networking.Loading
 import com.pedrofr.sportsfinder.networking.NoResults
 import com.pedrofr.sportsfinder.networking.Success
 import com.pedrofr.sportsfinder.viewmodels.SportsListViewModel
-
 import kotlinx.android.synthetic.main.fragment_sports_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,18 +21,6 @@ class SportsListFragment : Fragment() {
 
     private val sportsListAdapter by lazy { SportsListAdapter() }
     private val viewModel: SportsListViewModel by viewModel()
-
-    private val searchTextWatcher = object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            val searchedTitle = editable.toString()
-            viewModel.fetchSportsByTitle(searchedTitle)
-
-        }
-
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +37,16 @@ class SportsListFragment : Fragment() {
 
     }
 
+
     private fun initUi() {
-        searchEditText.addTextChangedListener(searchTextWatcher)
+
+        /*KTX Core addTextChangedListener
+        * Once search changes (and after debounce period) display new data
+         */
+        searchEditText.doOnTextChanged { text, _, _, _ ->
+            val searchedTitle = text.toString()
+            viewModel.fetchSportsByTitle(searchedTitle)
+        }
 
         sportRecyclerView.apply {
             adapter = sportsListAdapter
@@ -63,7 +56,7 @@ class SportsListFragment : Fragment() {
     }
 
     private fun initObservables() {
-        viewModel.result.observe(viewLifecycleOwner, { result ->
+        viewModel.getResultLiveData.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Loading -> {
                     statusButton.visibility = View.GONE

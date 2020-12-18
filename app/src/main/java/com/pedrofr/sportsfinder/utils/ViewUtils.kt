@@ -21,6 +21,10 @@ fun Context.hideKeyboard(view: View) {
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
+fun Fragment.toast(message: String, length: Int = Toast.LENGTH_SHORT) {
+    view?.let { activity?.toast(message, length) }
+}
+
 fun Context.toast(message: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, message, length).show()
 }

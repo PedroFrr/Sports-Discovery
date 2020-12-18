@@ -23,7 +23,11 @@ class EventsListViewModel(private val repository: SportRepository, private val s
     private var debouncePeriod: Long = 500
     private var searchJob: Job? = null
 
-    val result = MutableLiveData<Result<Any>>()
+    private val _result = MutableLiveData<Result<Any>>()
+
+    val getResultLiveData: LiveData<Result<Any>>
+        get() = _result
+
     private val userId = sharedPrefs.getLoggedInUserId()
 
     fun fetchEvents(sportKey: String){
@@ -32,7 +36,7 @@ class EventsListViewModel(private val repository: SportRepository, private val s
             delay(debouncePeriod)
             repository.getEvents(sportKey)
                 .collect {
-                    result.postValue(it)
+                    _result.postValue(it)
                 }
         }
     }

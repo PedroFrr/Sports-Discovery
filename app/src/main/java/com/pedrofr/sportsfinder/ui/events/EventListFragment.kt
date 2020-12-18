@@ -14,6 +14,7 @@ import com.pedrofr.sportsfinder.networking.Loading
 import com.pedrofr.sportsfinder.networking.NoResults
 import com.pedrofr.sportsfinder.networking.Success
 import com.pedrofr.sportsfinder.utils.convertLongToDayMonthYear
+import com.pedrofr.sportsfinder.utils.toast
 import com.pedrofr.sportsfinder.viewmodels.EventsListViewModel
 import kotlinx.android.synthetic.main.fragment_events_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -63,7 +64,7 @@ class EventListFragment : Fragment() {
     }
 
     private fun loadEventsList() {
-        viewModel.result.observe(viewLifecycleOwner, { result ->
+        viewModel.getResultLiveData.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is Loading -> {
                     statusButton.visibility = View.GONE
@@ -96,7 +97,7 @@ class EventListFragment : Fragment() {
 
         val eventsWithHeaders = mutableListOf<DataItem>()
 
-        // Loop through the fruit list and add headers where we need them
+        // Loop through the event list and add headers where we need them
         var currentHeader: String? = null
         events.forEach { eventItem ->
             val startDate = convertLongToDayMonthYear(eventItem.startTime)
@@ -114,16 +115,19 @@ class EventListFragment : Fragment() {
     private fun onClickListener(v: View, event: Event){
         when (v.id) {
             R.id.homeTeamOddBtn -> {
-                val eventId = event.eventId
-                viewModel.setPendingBet(selectedTeam = event.homeTeam, selectedOdd =  event.homeTeamOdd, eventId = eventId)
+                viewModel.setPendingBet(selectedTeam = event.homeTeam, selectedOdd =  event.homeTeamOdd, eventId = event.eventId)
+                toast("${event.homeTeam} selected")
             }
             R.id.awayTeamOddBtn -> {
-                Toast.makeText(activity, "AwayTeam Selected", Toast.LENGTH_SHORT).show()
+                viewModel.setPendingBet(selectedTeam = event.awayTeam, selectedOdd =  event.awayTeamOdd, eventId = event.eventId)
+                toast("${event.awayTeam} selected")
             }
             R.id.drawOddBtn -> {
-                Toast.makeText(activity, "Draw Team Selected", Toast.LENGTH_SHORT).show()
+                viewModel.setPendingBet(selectedTeam = "Draw", selectedOdd =  event.drawOdd!!, eventId = event.eventId)
+                toast("Draw selected")
             }
         }
     }
+
 
 }

@@ -27,11 +27,7 @@ class SportRepositoryImpl(
     Otherwise we'll return from the DB (can be empty if accessed for the first time)
      */
 
-    private suspend fun getEventsFromDataCache(sportsKey: String): List<Event> {
-        return withContext(Dispatchers.IO) {
-            sportsDao.getEvents(sportsKey)
-        }
-    }
+    private suspend fun getEventsFromDataCache(sportsKey: String): List<Event> = sportsDao.getEvents(sportsKey)
 
     override suspend fun getEvents(sportKey: String): Flow<Result<List<*>>> {
 
@@ -77,13 +73,11 @@ class SportRepositoryImpl(
 
     override suspend fun getUserDetail(userId: String): User? = sportsDao.getUserDetailById(userId)
 
-    override suspend fun getNumberOfUserBets(userId: String): Int =
-        sportsDao.getNumberOfUserBets(userId)
+    override suspend fun getNumberOfUserBets(userId: String): Int = sportsDao.getNumberOfUserBets(userId)
 
     override suspend fun createUser(user: User) = sportsDao.createNewUser(user)
 
-    override fun getUserDetailByUsername(username: String): User? =
-        sportsDao.getUserDetailByUsername(username)
+    override fun getUserDetailByUsername(username: String): User? = sportsDao.getUserDetailByUsername(username)
 
     override suspend fun fetchSportsByQuery(query: String): Flow<Result<List<*>>> {
         return flow {
@@ -132,29 +126,23 @@ class SportRepositoryImpl(
         }
     }
 
-    override fun fetchPendingBets(userId: String): Flow<List<BetWithEvents>> =
-        sportsDao.getPendingBetsUntilChanged(userId)
+    override fun fetchPendingBets(userId: String): Flow<List<BetWithEvents>> = sportsDao.getPendingBetsUntilChanged(userId)
 
     override suspend fun createPendingBet(bet: Bet) = sportsDao.insertBet(bet)
 
-    override suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef) =
-        sportsDao.insertBetWithEvents(betWithEvents)
+    override suspend fun createBetWithEvent(betWithEvents: BetWithEventCrossRef) = sportsDao.insertBetWithEvents(betWithEvents)
 
-    override suspend fun updatePendingBet(userId: String, betId: String, newStake: Double) =
-        sportsDao.updateUserPendingBet(userId, betId, newStake)
+    override suspend fun updatePendingBet(userId: String, betId: String, newStake: Double) = sportsDao.updateUserPendingBet(userId, betId, newStake)
 
     override suspend fun deleteBet(bet: Bet) = sportsDao.deleteBet(bet)
 
-    override suspend fun updateUserBalance(userId: String, newBalance: Double) =
-        sportsDao.updateUserBalance(userId, newBalance)
+    override suspend fun updateUserBalance(userId: String, newBalance: Double) = sportsDao.updateUserBalance(userId, newBalance)
 
     override fun getUserBalance(userId: String): Double = sportsDao.getUserBalance(userId)
 
-    override fun getNonPendingBets(userId: String): Flow<List<*>> =
-        sportsDao.getNonPendingBets(userId)
+    override fun getNonPendingBets(userId: String): Flow<List<*>> = sportsDao.getNonPendingBets(userId)
 
-    override suspend fun settleBet(betId: String, isWon: Boolean) =
-        sportsDao.settleBet(betId, isWon)
+    override suspend fun settleBet(betId: String, isWon: Boolean) = sportsDao.settleBet(betId, isWon)
 
 
 }

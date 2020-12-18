@@ -1,5 +1,6 @@
 package com.pedrofr.sportsfinder.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,13 +16,16 @@ class SportsListViewModel(private val repository: SportRepository) : ViewModel()
     private var debouncePeriod: Long = 500
     private var searchJob: Job? = null
 
-    val result = MutableLiveData<Result<Any>>()
+    private val _result = MutableLiveData<Result<Any>>()
+
+    val getResultLiveData: LiveData<Result<Any>>
+    get() = _result
 
     init {
         viewModelScope.launch {
             repository.getSports()
                 .collect {
-                    result.postValue(it)
+                    _result.postValue(it)
                 }
         }
     }
@@ -33,7 +37,7 @@ class SportsListViewModel(private val repository: SportRepository) : ViewModel()
             if (query.length < 2) {
                 repository.fetchSportsByQuery(query)
                     .collect {
-                        result.postValue(it)
+                        _result.postValue(it)
                     }
             }
         }
